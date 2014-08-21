@@ -1,0 +1,35 @@
+#OS Thumbnail Files
+.DS_Store
+Thumbs.db
+
+#Temporary Editor Files#
+*~
+\#*\#
+\#*
+.\#*
+*.swp
+
+#Build Files#
+*.o
+
+
+#Paper/Presentation
+*.aux
+*.out
+*.aux
+*.bbl
+*.blg
+*.log
+*.dvi
+*.nav
+*.snm
+*.toc
+*.vrb
+*.pdf
+*.synctex.gz
+
+#archives
+*.tar
+*.zip
+*.gz
+
