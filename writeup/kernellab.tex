@@ -135,7 +135,7 @@ You could download the file from the link above to your local computer; however,
 Once you have the tar file you will want to extract it:
 
 \begin{verbatim}
-~$ tar xvd helloworld.tar
+~$ tar xvf helloworld.tar
 x helloworld/
 x helloworld/hello.c
 x helloworld/Makefile
@@ -178,7 +178,8 @@ If we hadn't compiled the new kernel first and used the source for the new kerne
 \begin{verbatim}
 ~# dmesg | tail
 ...
-[  258.556284] hello: module verification failed: signature and/or  required key missing - tainting kernel
+[  258.556284] hello: module verification failed: signature and/or  
+	required key missing - tainting kernel
 [  258.558168] Hello world!
 [  265.987671] Cleaning up module.
 \end{verbatim}
