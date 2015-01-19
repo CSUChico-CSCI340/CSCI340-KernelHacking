@@ -28,7 +28,7 @@ Assignment 1: Writing a Kernel Module
 \maketitle
 
 \section*{Introduction}
-The purpose of this assignment is for you to become more familiar with how kernel modules are written and aspects of the linux operating system using these modules. 
+The purpose of this assignment is for you to become more familiar with how kernel modules are written and aspects of the Linux operating system using these modules. 
 
 \section*{Logistics}
 
@@ -44,9 +44,9 @@ There are no handout files for this assignment; however, on my webpage for this 
 
 \section*{Kernel Modules}
 
-There are two main ways to add code to the linux kernel. One way is to chose or add code to compile into the kernel during the compilation process. The other method is to add the code to the linux kernel while it is running, which is what a loadable kernel module is \cite{tldp}.
+There are two main ways to add code to the Linux kernel. One way is to choose or add code to compile into the kernel during the compilation process. The other method is to add the code to the Linux kernel while it is running, which is what a loadable kernel module is \cite{tldp}.
 
-For more information on linux kernel modules I highly recommend reading this extremely good introduction on what a linux loadable kernel module is and what it is commonly used for:
+For more information on Linux kernel modules I highly recommend reading this extremely good introduction on what Linux Loadable Kernel Modules are and how they are commonly used:
 
 {\url{http://www.tldp.org/HOWTO/Module-HOWTO/x73.html}}
 
@@ -56,13 +56,13 @@ For more information on linux kernel modules I highly recommend reading this ext
 For this assignment you will be doing the following:
 
 \begin{enumerate}
-\item{Get Ubuntu 14.04.1 kernel source}
-\item{Compile the latest kernel source for Ubuntu 14.04.1}
-\item{Compile a Hello World Kernel Module}
+\item{Get Ubuntu 14.04.1 Linux kernel source}
+\item{Compile the latest Linux kernel source for Ubuntu 14.04.1}
+\item{Compile a Hello World kernel module}
 \item{Write a kernel module to create and modify a /proc file}
 \end{enumerate}
 
-In this document we will walk through the steps to do items 1-3 above and the code for the hello world kernel module can be found on my website along with this writeup. Details about where to find information to write item 4 will be found later in this document. 
+In this document we will walk through the steps to do items 1-3 above. The code for the Hello World kernel module can be found on my website along with this writeup. Details about where to find information to write item 4 will be found later in this document. 
 
 
 
@@ -70,9 +70,9 @@ In this document we will walk through the steps to do items 1-3 above and the co
 
 Your first step will be to download and install the 64bit 14.04 Ubuntu server \cite{ubuntuserver} onto your computer or VM. If you need help with this step please ask me to show you in lab or come to my office hours. 
 
-Now that you have the 14.04 Ubuntu OS running you will need to download and get the source code for the linux kernel you are currently running as we aren't trying to compile and install a newer kernel onto the system. You can do this and is a common practice for people who are running more user built vs maintained linux distros. Gentoo linux would be an example of such a distro if you are interested \cite{gentoo}. 
+Now that you have the 14.04 Ubuntu OS running you will need to download and get the source code for the Linux kernel you are currently running as we aren't trying to compile and install a newer kernel onto the system. You can do this and is a common practice for people who are running more user built vs maintained Linux distros. Gentoo Linux would be an example of such a distro if you are interested \cite{gentoo}. 
 
-To get the source code for the currently running linux kernel on Ubuntu 14.04 OS we can use the apt-get, which can obtain the source for a specific binary package it provides. The more common approach for linux systems is to check out the current kernel source from the source tree on their git repo. But this assignment was tested with the apt-get approach so that's what I'm giving for the instructions; however, in the references you'll find an Ubuntu wiki article about building your own kernel that has the git commands if you want to know what they are \cite{ubuntukernel}.
+To get the source code for the currently running Linux kernel on Ubuntu 14.04, we can use the apt-get, which can obtain the source for a specific binary package it provides. The more common approach for Linux systems is to check out the current kernel source from the source tree on their git repo, but this assignment was tested with the apt-get approach so that's what I'm giving for the instructions; however, in the references you'll find an Ubuntu wiki article about building your own kernel that has the git commands if you want to know what they are \cite{ubuntukernel}.
 
 \begin{verbatim}
 # apt-get source linux-image-$(uname -r)
@@ -82,9 +82,9 @@ or
 $ sudo apt-get source linux-image-$(uname -r)
 \end{verbatim}
 
-It's worth noting that for the command above that will get us the linux source for the current kernel that I've provided it in two different ways. If you not that in one instance I used a \# for the prompt and in the other a \$ was used. The \# indicates that the shell is running currently as root, whereas the \$ indicates we are running as a user. The \emph{sudo} for the user mode indicates we are asking the super user or root user to do the following command. For many of the operations for this tutorial section of the assignment I will be just giving the commands that will be run as root indicated by the \#, but most should work fine if you use sudo before them. It's worth mentioning that \emph{sudo} only works if you have root privileges with your user account, if you do not have root user privileges then you should not attempt to use root. These \emph{sudo} attempts are usually logged and reported if you don't have privileges. 
+It's worth noting that for the command above that will get us the Linux source for the current kernel that I've provided it in two different ways. If you not that in one instance I used a \# for the prompt and in the other a \$ was used. The \# indicates that the shell is running currently as root, whereas the \$ indicates we are running as a user. The \emph{sudo} for the user mode indicates we are asking the super user or root user to do the following command. For many of the operations for this tutorial section of the assignment I will be just giving the commands that will be run as root indicated by the \#, but most should work fine if you use sudo before them. It's worth mentioning that \emph{sudo} only works if you have root privileges with your user account, if you do not have root user privileges then you should not attempt to use root. These \emph{sudo} attempts are usually logged and reported if you don't have privileges. 
 
-The apt-get command will take a little bit of time to successfully obtain the linux source code; however, when it finishes running you should now have a few files including the source code folder:
+The apt-get command will take a little bit of time to download the Linux source code; when it finishes running you should have a few files including the source code folder:
 
 \begin{verbatim}
 ~$ ls -l
@@ -95,7 +95,7 @@ drwxr-xr-x 26 root root      4096 Aug 21 12:00 linux-3.13.0
 -rw-r--r--  1 root root 116419243 Feb  3  2014 linux_3.13.0.orig.tar.gz
 \end{verbatim}
 
-These files for me were put into my home directory, which is also the path where I ran the apt-get command to grab the linux source command. Before we install the build environment we'll want to update the apt system's package list to make sure we have the most up to date list of packages. Then we'll need to get the build environment setup. I would recommend starting with installing build-essential and then install the build dependencies to insure all the tools to build the code is on the system:
+For me, these files were put into my home directory, which is also the directory in which I ran the apt-get command to grab the Linux source command. Before we install the build environment we'll want to update the apt system's package list to make sure we have the most up to date list of packages. Then we'll need to get the build environment setup. I would recommend starting with installing build-essential and then install the build dependencies to insure all the tools to build the code is on the system:
 
 \begin{verbatim}
 # apt-get update
@@ -103,7 +103,7 @@ These files for me were put into my home directory, which is also the path where
 # apt-get build-dep linux-image-$(uname -r)
 \end{verbatim}
 
-This will take a while to download and install all the packages you'll need to build and install the new kernel. We are not going to modify the configurations for the kernel so we can now move to building the new kernel. Ubuntu does this a bit differently than other kernels I've built, which usually have a make directive to make the configuration, which can be the default or modified by you, and a second make directive to build the kernel. Anyway to build the Ubuntu kernel we will use the following two commands:
+This will take a while to download and install all the packages you'll need to build and install the new kernel. We are not going to modify the configurations for the kernel so we can now move to building the new kernel. Ubuntu does this a bit differently than other kernels I've built, which usually have a make directive to make the configuration, which can be the default or modified by you, and a second make directive to build the kernel. In this case, to build the Ubuntu kernel we will use the following two commands:
 
 \begin{verbatim}
 # cd linux-3.13.0
@@ -111,22 +111,22 @@ This will take a while to download and install all the packages you'll need to b
 # fakeroot debian/rules binary-headers binary-generic
 \end{verbatim}
 
-The first step above changes the working directory to be the root of the kernel source tree, which in this case is the linux-3.13.0 folder. The building commands will take quite a while to run as an example on my fastest computer this build took an hour and half to build the \emph{.deb} files. 
+The first step above changes the working directory to be the root of the kernel source tree, which in this case is the Linux-3.13.0 folder. The building commands will take quite a while to run: as an example on my fastest computer this build took an hour and half to build the \emph{.deb} files. 
 
-Now that it's finished, hopefully without any errors, in the parent directory to the root of the kernel source tree, which is likely your home directory there will be numerous \emph{.deb} files. These are the kernel files, which we can now install and we'll be running this new compiled kernel once we've rebooted. If you got errors during the compilation please post about them in the class discussion board and see me in office hours/lab so we can track down \& fix the issue.
+When the build process is complete (hopefully without any errors), there will be numerous \emph{.deb} files in the parent directory of the kernel source tree. This parent directory is likely your home directory. These are the kernel files, which we can now install and we'll be running this new compiled kernel once we've rebooted. If you get errors during the compilation please post about them in the class discussion board and see me in office hours/lab so we can track down and fix the issue.
 
-Now let's install and test the new kernel. To do this we will us the following commands:
+Now let's install and test the new kernel. To do this we will use the following commands:
 
 \begin{verbatim}
 ~# dpkg -i linux*3.13.0*.deb
 ~# reboot
 \end{verbatim}
 
-Now after the computer reboots we'll be using the new kernel you compiled. You can now brag about your \emph{1337} or \emph{leet} status as a CS major in the fact you have compiled the linux kernel from source. 
+Now after the computer reboots we'll be using the new kernel you compiled. You can now brag about your \emph{1337} or \emph{leet} status as a CS major in the fact you have compiled the Linux kernel from source. 
 
-\section*{Compile Hello World Kernel Module}
+\section*{Compile Hello World kernel module}
 
-Now let's get the hello world kernel module source and Makefile files from my web server and work on compiling a linux kernel module. You will want to download the {\it helloworld.tar} file from my website:
+Now let's get the Hello World kernel module source and Makefile files from my web server and work on compiling a Linux kernel module. You will need to download the {\it helloworld.tar} file from my website:
 
 {\url{http://bryancdixon.com/site_media/Fall2014/CSCI340/helloworld.tar}}
 
@@ -141,9 +141,9 @@ x helloworld/hello.c
 x helloworld/Makefile
 \end{verbatim}
 
-You should then have a helloworld folder in your current working directory. At this point you'll want to likely take a look at the hello world source file and Makefile to familiarize yourself with the workings of these two files. These two files are also a good building point for doing the final part of this assignment. 
+You should then have a helloworld folder in your current working directory. At this point you'll want to likely take a look at the helloworld.c source file and Makefile to familiarize yourself with the workings of these two files. These two files are also a good starting point for the final part of this assignment. 
 
-To build the hello world kernel module you should navigate your working directory to be in the helloworld folder. Here to make the kernel module is as simple as just typing make as root.
+To build the Hello World kernel module you will need to change your working directory to be in the helloworld folder. Here to make the kernel module is as simple as just typing make as root.
 
 \begin{verbatim}
 ~# cd helloworld
@@ -152,7 +152,7 @@ To build the hello world kernel module you should navigate your working director
 
 \newpage
 
-This will build numerous files.
+This will build numerous files:
 
 \begin{verbatim}
 ~/helloworld$ ls
@@ -171,7 +171,7 @@ The only file that is generated we care about is the {\it hello.ko} file, which 
 [ 6819.571911] Cleaning up module.
 \end{verbatim}
 
-In the above example after installing the hello world kernel module I then uninstalled it via the {\it rmmod} command. We then took a look at the printk messages to find the printk statements that told us "Hello World!" when it was installed and that it was cleaning up module when we removed it. As you can see above the kernel module succeeded in accomplishing this.
+In the above example after installing the hello world kernel module I then uninstalled it with the {\it rmmod} command. We can then inspect the dmesg output to find the printk statements that told us "Hello World!" when it was installed and that it was cleaning up module when we removed it. As you can see above the kernel module succeeded in accomplishing this.
 
 If we hadn't compiled the new kernel first and used the source for the new kernel for this module then it will still install on some systems but you'll see a warning in the {\it dmesg} output:
 
@@ -188,7 +188,7 @@ This is the reason why we opted to compile the kernel from source to start.
 
 \section*{Write your own kernel module}
 
-So now for the hard part, using the skills you've gained in this assignment so far, resources provided later in the hints section, and some details from lab you'll now need to write your own linux kernel module to provide us a system statistic in a /proc system file \cite{cse551}. 
+So now for the hard part, using the skills you've gained in this assignment so far, resources provided later in the hints section, and some details from lab you'll now need to write your own Linux kernel module to provide us a system statistic in a /proc system file \cite{cse551}. 
 
 When we insert your module for grading it should create a new entry in the /proc filesystem called:
 
@@ -223,9 +223,9 @@ It's worth thinking of this problem in a few steps:
 \begin{enumerate}
 \item Read about how the /proc filesystem works
 \item Figure out how you write information to a /proc file
-\item Write a successful kernel module that prints a fixed string when one cat's the /proc/num\_pagefaults file. 
-\item Figure out where you can get the statistics about the page faults from the kernel from
-\item Write your kernel module that prints that statistic every time someone cat's the /proc/num\_pagefaults file.
+\item Write a kernel module that successfully prints a fixed string when one cat's the /proc/num\_pagefaults file. 
+\item Locate the kernel code that generates page faults statistics
+\item Write a kernel module that prints that statistic every time someone cat's the /proc/num\_pagefaults file.
 \end{enumerate}
 
 Good luck!
@@ -235,8 +235,8 @@ Good luck!
 There are quite a few hints for this assignment:
 
 \begin{enumerate}
-\item The linux kernel already keeps track of this statistic, you should find out what variable you need to access to get this statistic in your kernel module.
-\item If you look in the arch/i386/mm/fault.c source code file of the linux kernel, you'll see a function called do\_page\_fault, which is the first real function in the kernel that gets called on a page fault. Inside that function, you can see that it invokes another function called "handle\_mm\_fault" to actually handle the page fault. Find the handle\_mm\_fault function (it's somewhere else in the kernel source tree, in the archtecture-independent part), and keep poking through the code path to see if you find something useful \cite{cse551}.
+\item The Linux kernel already keeps track of this statistic, you should find out what variable you need to access to get this statistic in your kernel module.
+\item If you look in the arch/i386/mm/fault.c source code file of the Linux kernel, you'll see a function called do\_page\_fault, which is the first real function in the kernel that gets called on a page fault. Inside that function, you can see that it invokes another function called "handle\_mm\_fault" to actually handle the page fault. Find the handle\_mm\_fault function (it's somewhere else in the kernel source tree, in the archtecture-independent part), and keep poking through the code path to see if you find something useful \cite{cse551}.
 \item You need find the symbol that has been explicitly exported by the kernel to be accessible to kernel modules as not all functions and variables in the kernel code are accessible to kernel modules. The kernel uses the \emph{EXPORT\_SYMBOL} macro to export a particular symbol, so you need to find the specific symbol that's been exported as such that provides the page fault statistic we want.
 \item You may need to declare your kernel module is licensed under the GPL open source license, as some kernel symbols are only accessible if you have declared your kernel module as being licensed under the GPL license. To declare it you only need to add a single line at the end of your kernel module code\cite{gpl}:
 
@@ -244,7 +244,7 @@ There are quite a few hints for this assignment:
 MODULE_LICENSE("GPL");
 \end{verbatim}
 
-\item The linux kernel already includes this statistic in a /proc file with numerous other statistics. So might be useful to see if you can find out how this is already done and see if you can modify it to do what I've asked to make a new file with only the number of page faults that have occurred currently stored in it. For reference if you do the following you can see this statistic and is a good way to check that your kernel module is finding the right stat:
+\item The Linux kernel already includes this statistic in a /proc file with numerous other statistics. So might be useful to see if you can find out how this is already done and see if you can modify it to make a new /proc file that contains the current number of page faults only. The following command provides a good reference for the comparing the kernel statistics with those of your kernel module:
 
 \begin{verbatim}
 ~$ cat /proc/vmstat | grep pgfault
@@ -254,7 +254,7 @@ pgfault 2301445
 
 \section*{Evaluation}
 
-You will be graded based on your success of getting the various steps of this assignment completed as such the scoring for this assignment is as follows:
+You will be graded based on your success of getting the various steps of this assignment completed. As such, the scoring for this assignment is as follows:
 
 \begin{itemize}
 \item 20\% If you successfully compile a new kernel from source
@@ -266,13 +266,13 @@ You will be graded based on your success of getting the various steps of this as
 
 \section*{Hand In Instructions}
 
-For your submission you will need to include the compiled result files as a \emph{tar.gz} file. As such you should include all the \emph{.deb} and \emph{.ko} files you generated. So should have six \emph{.deb} and two \emph{.ko} files for the complete submission. I would recommend creating a folder with all of these files and then do the following, where the example assumes you are in the parent directory of the folder and the folder is named \emph{CSCI340\_L1\_submission}:
+For your submission you will need to include the compiled result files as a \emph{tar.gz} file. As such you should include all the \emph{.deb} and \emph{.ko} files you generated. There should be six \emph{.deb} and two \emph{.ko} files for the complete submission. I would recommend creating a folder with all of these files and executing following command, where the example assumes you are in the parent directory of the folder and the folder is named \emph{CSCI340\_L1\_submission}:
 
 \begin{verbatim}
 ~$ tar -zcvf submission.tar.gz CSCI340_L1_submission/
 \end{verbatim}
 
-After using that command in the example you'd now have a file in your current working directory named \emph{submission.tar.gz}, which is what you will submit to the turnin system:
+You should now have a file in your current working directory named \emph{submission.tar.gz}, which is what you will submit to the turnin system:
 
 \url{http://turnin.ecst.csuchico.edu/}
 
