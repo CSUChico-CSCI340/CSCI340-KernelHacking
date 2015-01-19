@@ -235,7 +235,10 @@ There are quite a few hints for this assignment:
 
 \begin{enumerate}
 \item The Linux kernel already keeps track of this statistic, you should find out what variable you need to access to get this statistic in your kernel module.
-\item If you look in the arch/i386/mm/fault.c source code file of the Linux kernel, you'll see a function called do\_page\_fault, which is the first real function in the kernel that gets called on a page fault. Inside that function, you can see that it invokes another function called "handle\_mm\_fault" to actually handle the page fault. Find the handle\_mm\_fault function (it's somewhere else in the kernel source tree, in the archtecture-independent part), and keep poking through the code path to see if you find something useful \cite{cse551}.
+\item Make the virtual disk for the VM has plenty of space. The default 20 GB is probably sufficient. 
+\item Taking a snapshot of the VM once the base system is installed and configured is quite handy if something gets fouled up in the process of building the kernel.
+\item Taking a snapshot of the VM before installing the new kernel is quite handy if something gets fouled up in the process of installing the kernel.
+\item Installing all built .deb packages using the wildcard lead to strange errors regarding unresolved dependencies for the linux-cloud packages. Compilation of the Hello World example seems to work fine with just the linux-headers and linux-image packages installed.
 \item You need find the symbol that has been explicitly exported by the kernel to be accessible to kernel modules as not all functions and variables in the kernel code are accessible to kernel modules. The kernel uses the \emph{EXPORT\_SYMBOL} macro to export a particular symbol, so you need to find the specific symbol that's been exported as such that provides the page fault statistic we want.
 \item You may need to declare your kernel module is licensed under the GPL open source license, as some kernel symbols are only accessible if you have declared your kernel module as being licensed under the GPL license. To declare it you only need to add a single line at the end of your kernel module code\cite{gpl}:
 
