@@ -15,7 +15,7 @@
 
 \begin{document}
 
-\title{CSCI340, Fall 2014\\
+\title{CSCI340, Spring 2015\\
 Assignment 1: Writing a Kernel Module
 }
 
@@ -67,8 +67,15 @@ In this document we will walk through the steps to do items 1-3 above. The code 
 
 
 \section*{Compile 14.04.1 kernel from source}
+Your first step will be installing the build environment, but first we'll want to update the apt system's package list to make sure we have the most up to date list of packages. Then we'll need to get the build environment setup. I would recommend starting with installing build-essential and then install the build dependencies to insure all the tools to build the code is on the system:
 
-Your first step will be to download and install the 64bit 14.04 Ubuntu server \cite{ubuntuserver} onto your computer or VM. If you need help with this step please ask me to show you in lab or come to my office hours. 
+\begin{verbatim}
+# apt-get update
+# apt-get install build-essential
+# apt-get build-dep linux-image-$(uname -r)
+\end{verbatim}
+
+This will take a while to download and install all the packages you'll need to download, build and install the new kernel. Your second step will be to download and install the 64bit 14.04 Ubuntu server \cite{ubuntuserver} onto your computer or VM. If you need help with this step please ask me to show you in lab or come to my office hours. 
 
 Now that you have the 14.04 Ubuntu OS running you will need to download and get the source code for the Linux kernel you are currently running as we aren't trying to compile and install a newer kernel onto the system. You can do this and is a common practice for people who are running more user built vs maintained Linux distros. Gentoo Linux would be an example of such a distro if you are interested \cite{gentoo}. 
 
@@ -95,15 +102,7 @@ drwxr-xr-x 26 root root      4096 Aug 21 12:00 linux-3.13.0
 -rw-r--r--  1 root root 116419243 Feb  3  2014 linux_3.13.0.orig.tar.gz
 \end{verbatim}
 
-For me, these files were put into my home directory, which is also the directory in which I ran the apt-get command to grab the Linux source command. Before we install the build environment we'll want to update the apt system's package list to make sure we have the most up to date list of packages. Then we'll need to get the build environment setup. I would recommend starting with installing build-essential and then install the build dependencies to insure all the tools to build the code is on the system:
-
-\begin{verbatim}
-# apt-get update
-# apt-get install build-essential
-# apt-get build-dep linux-image-$(uname -r)
-\end{verbatim}
-
-This will take a while to download and install all the packages you'll need to build and install the new kernel. We are not going to modify the configurations for the kernel so we can now move to building the new kernel. Ubuntu does this a bit differently than other kernels I've built, which usually have a make directive to make the configuration, which can be the default or modified by you, and a second make directive to build the kernel. In this case, to build the Ubuntu kernel we will use the following two commands:
+For me, these files were put into my home directory, which is also the directory in which I ran the apt-get command to grab the Linux source command. We are not going to modify the configurations for the kernel so we can now move to building the new kernel. Ubuntu does this a bit differently than other kernels I've built, which usually have a make directive to make the configuration, which can be the default or modified by you, and a second make directive to build the kernel. In this case, to build the Ubuntu kernel we will use the following two commands:
 
 \begin{verbatim}
 # cd linux-3.13.0
