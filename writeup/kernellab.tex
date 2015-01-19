@@ -46,7 +46,7 @@ There are no handout files for this assignment; however, on my webpage for this 
 
 There are two main ways to add code to the Linux kernel. One way is to choose or add code to compile into the kernel during the compilation process. The other method is to add the code to the Linux kernel while it is running, which is what a loadable kernel module is \cite{tldp}.
 
-For more information on Linux kernel modules I highly recommend reading this extremely good introduction on what Linux Loadable Kernel Modules are and how they are commonly used:
+For more information on Linux kernel modules, I highly recommend reading this extremely good introduction to Linux Loadable Kernel Modules and how they are commonly used:
 
 {\url{http://www.tldp.org/HOWTO/Module-HOWTO/x73.html}}
 
@@ -62,39 +62,41 @@ For this assignment you will be doing the following:
 \item{Write a kernel module to create and modify a /proc file}
 \end{enumerate}
 
-In this document we will walk through the steps to do items 1-3 above. The code for the Hello World kernel module can be found on my website along with this writeup. Details about where to find information to write item 4 will be found later in this document. 
+In this document we will walk through the steps to do items 1-3 above. The code for the Hello World kernel module can be found on my website along with this writeup. Details on item 4 are found later in this document. 
 
 
 
 \section*{Compile 14.04.1 kernel from source}
-Your first step will be installing the build environment, but first we'll want to update the apt system's package list to make sure we have the most up to date list of packages. Then we'll need to get the build environment setup. I would recommend starting with installing build-essential and then install the build dependencies to insure all the tools to build the code is on the system:
+Your first step will be to download and install the 64bit 14.04 Ubuntu server \cite{ubuntuserver} onto your computer or VM. If you need help with this step please ask me to show you in lab or come to my office hours.
+
+Once Ubuntu 14.04 is installed, you will need to set up the build environment inside of this installation by running the following commands in a terminal window:
 
 \begin{verbatim}
-# apt-get update
-# apt-get install build-essential
-# apt-get build-dep linux-image-$(uname -r)
+$ sudo apt-get update
+$ sudo apt-get install build-essential
+$ sudo apt-get build-dep linux-image-$(uname -r)
 \end{verbatim}
 
-This will take a while to download and install all the packages you'll need to download, build and install the new kernel. Your second step will be to download and install the 64bit 14.04 Ubuntu server \cite{ubuntuserver} onto your computer or VM. If you need help with this step please ask me to show you in lab or come to my office hours. 
+These commands update the package list to make sure we have the most up-to-date list of packages, install some general-purpose build tools, and finally install the build dependencies for the Linux kernel itself. In this way, we insure all the necessary tools to download, build, and install the new Linux kernel are available on the system.
 
-Now that you have the 14.04 Ubuntu OS running you will need to download and get the source code for the Linux kernel you are currently running as we aren't trying to compile and install a newer kernel onto the system. You can do this and is a common practice for people who are running more user built vs maintained Linux distros. Gentoo Linux would be an example of such a distro if you are interested \cite{gentoo}. 
+The \texttt{sudo} in the previous commands indicate we are invoking the given commands as the root user. \texttt{sudo} only works if your user account has sudoer privileges; if not, you will receive a message indicating the user is not in the sudoers file. This is usually not an issue in standard installation, but if you encounter this message, it is simple to give the current user permission to run commands with \texttt{sudo} \cite{sudoers}.
 
-To get the source code for the currently running Linux kernel on Ubuntu 14.04, we can use the apt-get, which can obtain the source for a specific binary package it provides. The more common approach for Linux systems is to check out the current kernel source from the source tree on their git repo, but this assignment was tested with the apt-get approach so that's what I'm giving for the instructions; however, in the references you'll find an Ubuntu wiki article about building your own kernel that has the git commands if you want to know what they are \cite{ubuntukernel}.
+Once the build environment is set up, you will need to download the source code for the Linux kernel you are currently running (we aren't trying to compile and install a newer kernel, just re-compile the current kernel). Downloading the source code for the Linux kernel a simple process, and very common for people who are running user-built (instead of package-maintained) Linux distros. Gentoo Linux is an example of such a distro if you are interested \cite{gentoo}.
+
+To get the source code for the currently running Linux kernel on Ubuntu 14.04, we will use \texttt{apt-get}, which will obtain the source for a specific binary package it provides: 
 
 \begin{verbatim}
-# apt-get source linux-image-$(uname -r)
-
-or
-
-$ sudo apt-get source linux-image-$(uname -r)
+$ mkdir kernel-assignment
+$ cd kernel-assignment
+$ apt-get source linux-image-$(uname -r)
 \end{verbatim}
 
-It's worth noting that for the command above that will get us the Linux source for the current kernel that I've provided it in two different ways. If you not that in one instance I used a \# for the prompt and in the other a \$ was used. The \# indicates that the shell is running currently as root, whereas the \$ indicates we are running as a user. The \emph{sudo} for the user mode indicates we are asking the super user or root user to do the following command. For many of the operations for this tutorial section of the assignment I will be just giving the commands that will be run as root indicated by the \#, but most should work fine if you use sudo before them. It's worth mentioning that \emph{sudo} only works if you have root privileges with your user account, if you do not have root user privileges then you should not attempt to use root. These \emph{sudo} attempts are usually logged and reported if you don't have privileges. 
+It is also common practice to obtain the Linux kernel source by checking out the current kernel source from the source tree on the official Linux git repository, but this assignment was tested with the apt-get approach so that's what I'm giving for the instructions. The references contain a link to an Ubuntu wiki article about building your own kernel that has the git commands if you want to know what they are \cite{ubuntukernel}.
 
-The apt-get command will take a little bit of time to download the Linux source code; when it finishes running you should have a few files including the source code folder:
+The \texttt{apt-get} command will take a few minutes to download the Linux source code. When the download process finishes, you should have some additional files and a source code folder in the current working directory:
 
 \begin{verbatim}
-~$ ls -l
+$ ls -l
 total 121428
 drwxr-xr-x 26 root root      4096 Aug 21 12:00 linux-3.13.0
 -rw-r--r--  1 root root   7902814 Aug 13 15:58 linux_3.13.0-34.60.diff.gz
@@ -102,26 +104,26 @@ drwxr-xr-x 26 root root      4096 Aug 21 12:00 linux-3.13.0
 -rw-r--r--  1 root root 116419243 Feb  3  2014 linux_3.13.0.orig.tar.gz
 \end{verbatim}
 
-For me, these files were put into my home directory, which is also the directory in which I ran the apt-get command to grab the Linux source command. We are not going to modify the configurations for the kernel so we can now move to building the new kernel. Ubuntu does this a bit differently than other kernels I've built, which usually have a make directive to make the configuration, which can be the default or modified by you, and a second make directive to build the kernel. In this case, to build the Ubuntu kernel we will use the following two commands:
+We are not going to modify the kernel's configuration, so we can now move to building the new kernel. Ubuntu does this a bit differently than other kernels I've built, which usually have a \texttt{make} directive to make the configuration, which can be the default or modified by you, and a second \texttt{make} directive to build the kernel. In this case, we will build the kernel using the following commands:
 
 \begin{verbatim}
-# cd linux-3.13.0
-# fakeroot debian/rules clean
-# fakeroot debian/rules binary-headers binary-generic
+$ cd linux-3.13.0
+$ fakeroot debian/rules clean
+$ fakeroot debian/rules binary-headers binary-generic
 \end{verbatim}
 
-The first step above changes the working directory to be the root of the kernel source tree, which in this case is the Linux-3.13.0 folder. The building commands will take quite a while to run: as an example on my fastest computer this build took an hour and half to build the \emph{.deb} files. 
+The first step above changes the working directory to be the root of the kernel source tree, which is the \texttt{linux-3.13.0} folder in this case. The build commands will take quite a while to run; on my fastest computer this build took an hour and half to build the \texttt{.deb} files. 
 
-When the build process is complete (hopefully without any errors), there will be numerous \emph{.deb} files in the parent directory of the kernel source tree. This parent directory is likely your home directory. These are the kernel files, which we can now install and we'll be running this new compiled kernel once we've rebooted. If you get errors during the compilation please post about them in the class discussion board and see me in office hours/lab so we can track down and fix the issue.
+When the build process is complete (hopefully without any errors), there will be numerous \texttt{.deb} files in the parent directory of the kernel source tree (this parent directory will be the \texttt{kernel-assignement} directory we created when downloading the kernel source code). The \texttt{.deb} files contain the compiled kernel, which we can now install and run (after rebooting). If you get errors during the compilation, please post about them in the class discussion board and see me in office hours or during lab so we can track down and fix the issue.
 
 Now let's install and test the new kernel. To do this we will use the following commands:
 
 \begin{verbatim}
-~# dpkg -i linux*3.13.0*.deb
-~# reboot
+$ sudo dpkg -i linux*3.13.0*.deb
+$ sudo reboot
 \end{verbatim}
 
-Now after the computer reboots we'll be using the new kernel you compiled. You can now brag about your \emph{1337} or \emph{leet} status as a CS major in the fact you have compiled the Linux kernel from source. 
+After the computer reboots, we'll be using the new kernel you compiled. You can now brag about your \emph{1337} or \emph{leet} status as a CS major and the fact you have compiled the Linux kernel from source. 
 
 \section*{Compile Hello World kernel module}
 
@@ -286,6 +288,10 @@ You should now have a file in your current working directory named \emph{submiss
 	\newblock \url{https://courses.cs.washington.edu/courses/cse551/07sp/programming/a2.html}.
 	\newblock Online; accessed 22-August-2014 
 
+\bibitem{sudoers} Allowing other users to run sudo
+	\newblock \url{https://help.ubuntu.com/community/RootSudo#Allowing_other_users_to_run_sudo}.
+	\newblock Online; accessed 19-January-2015.	
+	
 \bibitem{gentoo} Gentoo Linux
 	\newblock \url{https://www.gentoo.org/}.
 	\newblock Online; accessed 21-August-2014.	
