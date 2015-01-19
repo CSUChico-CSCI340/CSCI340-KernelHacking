@@ -119,7 +119,8 @@ When the build process is complete (hopefully without any errors), there will be
 Now let's install and test the new kernel. To do this we will use the following commands:
 
 \begin{verbatim}
-$ sudo dpkg -i linux*3.13.0*.deb
+$ sudo dpkg -i linux-headers-*.deb
+$ sudo dpkg -i linux-image-*.deb
 $ sudo reboot
 \end{verbatim}
 
@@ -131,7 +132,7 @@ Now let's get the Hello World kernel module source and Makefile files from my we
 
 {\url{http://bryancdixon.com/site_media/Fall2014/CSCI340/helloworld.tar}}
 
-You could download the file from the link above to your local computer; however, I would recommend downloading it directly to your Ubuntu VM so you can make use of it and don't have to worry about copying the files onto the VM. To do this you can use the {\it wget} command with that URL as the argument to the command and it'll download the {\it helloworld.tar} file to your current working directory.
+You could download the file from the link above to your local computer, but I would recommend downloading it directly to your Ubuntu VM so you can make use of it with having to worry about copying the files onto the VM. To do this you can use the {\it wget} command with that URL as the argument to the command and it'll download the {\it helloworld.tar} file to your current working directory.
 
 Once you have the tar file you will want to extract it:
 
@@ -142,13 +143,13 @@ x helloworld/hello.c
 x helloworld/Makefile
 \end{verbatim}
 
-You should then have a helloworld folder in your current working directory. At this point you'll want to likely take a look at the helloworld.c source file and Makefile to familiarize yourself with the workings of these two files. These two files are also a good starting point for the final part of this assignment. 
+You should now have a \texttt{helloworld} folder in your current working directory. At this point you'll want to likely take a look at the \texttt{helloworld.c} source file and the Makefile to familiarize yourself with the workings of these two files. These two files are also a good starting point for the final part of this assignment. 
 
-To build the Hello World kernel module you will need to change your working directory to be in the helloworld folder. Here to make the kernel module is as simple as just typing make as root.
+To build the Hello World kernel module you will need to change your working directory to be in the \texttt{helloworld} folder. Building kernel module is as simple as just typing \texttt{make}:
 
 \begin{verbatim}
-~# cd helloworld
-~# make
+$ cd helloworld
+$ make
 \end{verbatim}
 
 \newpage
@@ -161,7 +162,7 @@ hello.c  hello.ko  hello.mod.c  hello.mod.o  hello.o
 Makefile  modules.order  Module.symvers
 \end{verbatim}
 
-The only file that is generated we care about is the {\it hello.ko} file, which is a kernel object file. We can now install the generated helloworld kernel module by using the {\it insmod} command:
+The only generated file that we care about is the \texttt{hello.ko} file, which is a kernel object file. We can now install the generated helloworld kernel module by using the \texttt{insmod} command:
 
 \begin{verbatim}
 ~/helloworld# insmod hello.ko
@@ -172,9 +173,9 @@ The only file that is generated we care about is the {\it hello.ko} file, which 
 [ 6819.571911] Cleaning up module.
 \end{verbatim}
 
-In the above example after installing the hello world kernel module I then uninstalled it with the {\it rmmod} command. We can then inspect the dmesg output to find the printk statements that told us "Hello World!" when it was installed and that it was cleaning up module when we removed it. As you can see above the kernel module succeeded in accomplishing this.
+In the above example, I inserted the Hello World kernel module, immediately removed it with the \texttt {rmmod} command, and finally inspected the \texttt{dmesg} output to find the printk statements that printed "Hello World!" when the module was installed and the cleanup message when the module was removed. In the above output, this process completed successfully.
 
-If we hadn't compiled the new kernel first and used the source for the new kernel for this module then it will still install on some systems but you'll see a warning in the {\it dmesg} output:
+You may see a warning in the \texttt{dmesg} output:
 
 \begin{verbatim}
 ~# dmesg | tail
@@ -185,11 +186,11 @@ If we hadn't compiled the new kernel first and used the source for the new kerne
 [  265.987671] Cleaning up module.
 \end{verbatim}
 
-This is the reason why we opted to compile the kernel from source to start. 
+This warning can be safely ignored.
 
 \section*{Write your own kernel module}
 
-So now for the hard part, using the skills you've gained in this assignment so far, resources provided later in the hints section, and some details from lab you'll now need to write your own Linux kernel module to provide us a system statistic in a /proc system file \cite{cse551}. 
+Now for the hard part: using the skills you've gained in this assignment so far, resources provided later in the hints section, and some details from lab you'll now need to write your own Linux kernel module to provide us a system statistic in a /proc system file \cite{cse551}. 
 
 When we insert your module for grading it should create a new entry in the /proc filesystem called:
 
@@ -236,19 +237,17 @@ Good luck!
 There are quite a few hints for this assignment:
 
 \begin{enumerate}
-\item The Linux kernel already keeps track of this statistic, you should find out what variable you need to access to get this statistic in your kernel module.
-\item Make the virtual disk for the VM has plenty of space. The default 20 GB is probably sufficient. 
-\item Taking a snapshot of the VM once the base system is installed and configured is quite handy if something gets fouled up in the process of building the kernel.
-\item Taking a snapshot of the VM before installing the new kernel is quite handy if something gets fouled up in the process of installing the kernel.
-\item Installing all built .deb packages using the wildcard lead to strange errors regarding unresolved dependencies for the linux-cloud packages. Compilation of the Hello World example seems to work fine with just the linux-headers and linux-image packages installed.
-\item You need find the symbol that has been explicitly exported by the kernel to be accessible to kernel modules as not all functions and variables in the kernel code are accessible to kernel modules. The kernel uses the \emph{EXPORT\_SYMBOL} macro to export a particular symbol, so you need to find the specific symbol that's been exported as such that provides the page fault statistic we want.
+\item When compiling the Linux kernel, make sure the virtual disk for the VM has plenty of space. The default disk size of 20 GB is probably sufficient.
+\item Take a snapshot of the VM once the base system is installed and configured. This snapshot will be quite handy if something gets fouled up during the process of building the kernel.
+\item Take a snapshot of the VM before installing the new kernel. This snapshot will be quite handy if something gets fouled up during the process of installing the kernel.
+\item Be sure to successfully complete the kernel compilation portion of the assignment before attempting to compile the Hello World kernel module. In particular, the header files for the Linux kernel must be installed for kernel modules to build correctly.
+\item You will need to find the symbol that has been explicitly exported by the kernel to be accessible to kernel modules; not all functions and variables in the kernel code are accessible to kernel modules. The kernel uses the \emph{EXPORT\_SYMBOL} macro to export a particular symbol, so you need to find the specific symbol that's been exported as such that provides the page fault statistic we want.
 \item You may need to declare your kernel module is licensed under the GPL open source license, as some kernel symbols are only accessible if you have declared your kernel module as being licensed under the GPL license. To declare it you only need to add a single line at the end of your kernel module code\cite{gpl}:
 
 \begin{verbatim}
 MODULE_LICENSE("GPL");
 \end{verbatim}
-
-\item The Linux kernel already includes this statistic in a /proc file with numerous other statistics. So might be useful to see if you can find out how this is already done and see if you can modify it to make a new /proc file that contains the current number of page faults only. The following command provides a good reference for the comparing the kernel statistics with those of your kernel module:
+\item The Linux kernel already includes the page fault statistic in a /proc file, along with numerous other statistics. It is useful to see how this is already done and see if you can modify it to make a new /proc file that contains the current number of page faults only. The following command provides a good reference for the comparing the kernel statistics with those of your kernel module:
 
 \begin{verbatim}
 ~$ cat /proc/vmstat | grep pgfault
@@ -258,11 +257,11 @@ pgfault 2301445
 
 \section*{Evaluation}
 
-You will be graded based on your success of getting the various steps of this assignment completed. As such, the scoring for this assignment is as follows:
+You will be graded based on your success in completing various steps of this assignment. The scoring for this assignment is as follows:
 
 \begin{itemize}
 \item 20\% If you successfully compile a new kernel from source
-\item 40\% You also successfully compile the hello world kernel module
+\item 40\% You also successfully compile the Hello World kernel module
 \item 70\% You also successfully write your own kernel module that creates the correct /proc file with a fixed value reported.
 \item 100\% You successfully get everything else working and your kernel module correctly writes the number of page faults to the /proc file requested. 
 \end{itemize}
@@ -270,13 +269,13 @@ You will be graded based on your success of getting the various steps of this as
 
 \section*{Hand In Instructions}
 
-For your submission you will need to include the compiled result files as a \emph{tar.gz} file. As such you should include all the \emph{.deb} and \emph{.ko} files you generated. There should be six \emph{.deb} and two \emph{.ko} files for the complete submission. I would recommend creating a folder with all of these files and executing following command, where the example assumes you are in the parent directory of the folder and the folder is named \emph{CSCI340\_L1\_submission}:
+For your submission you will need to include the compiled result files as a \texttt{tar.gz} file. As such you should include all the \texttt{.deb} and \texttt{.ko} files you generated. There should be six \texttt{.deb} and two \texttt{.ko} files for the complete submission. I would recommend creating a folder containing all the required files and executing following command. This example assumes you are in the parent directory of the folder and the folder is named \texttt{CSCI340\_L1\_submission}:
 
 \begin{verbatim}
 ~$ tar -zcvf submission.tar.gz CSCI340_L1_submission/
 \end{verbatim}
 
-You should now have a file in your current working directory named \emph{submission.tar.gz}, which is what you will submit to the turnin system:
+You should now have a file in your current working directory named \texttt{submission.tar.gz}, which is what you will submit to the turnin system:
 
 \url{http://turnin.ecst.csuchico.edu/}
 
