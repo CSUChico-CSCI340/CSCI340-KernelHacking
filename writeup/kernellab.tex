@@ -253,6 +253,13 @@ MODULE_LICENSE("GPL");
 ~$ cat /proc/vmstat | grep pgfault
 pgfault 2301445
 \end{verbatim}
+\item The /proc filesystem is not persistent storage in the same sense as an NTFS or ext3 filesystem, so don't bother searching for file I/O tutorials. From \url{http://www.tldp.org/LDP/Linux-Filesystem-Hierarchy/html/proc.html}:
+
+\begin{quote}
+/proc is very special in that it is also a virtual filesystem. It's sometimes referred to as a process information pseudo-file system. It doesn't contain 'real' files but runtime system information (e.g. system memory, devices mounted, hardware configuration, etc). For this reason it can be regarded as a control and information centre for the kernel.
+\end{quote}
+
+Instead of performing standard file I/O, we need to register event handlers for various events. The \texttt{seqfile} API introduced in Linux 3.10 is quite useful for this. \url{https://github.com/torvalds/linux/blob/master/fs/proc/version.c} is a simple example that can be readily adapted to complete the pagefault portion of the assignment.
 \end{enumerate}
 
 \section*{Evaluation}
