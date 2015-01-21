@@ -253,7 +253,8 @@ MODULE_LICENSE("GPL");
 ~$ cat /proc/vmstat | grep pgfault
 pgfault 2301445
 \end{verbatim}
-\item The /proc filesystem is not persistent storage in the same sense as an NTFS or ext3 filesystem, so don't bother searching for file I/O tutorials. From \url{http://www.tldp.org/LDP/Linux-Filesystem-Hierarchy/html/proc.html}:
+\item The /proc filesystem is not persistent storage in the same sense as an NTFS or ext3 filesystem, so don't bother searching for file I/O tutorials. To quote a good reference on the proc system\cite{proc}: 
+
 
 \begin{quote}
 /proc is very special in that it is also a virtual filesystem. It's sometimes referred to as a process information pseudo-file system. It doesn't contain 'real' files but runtime system information (e.g. system memory, devices mounted, hardware configuration, etc). For this reason it can be regarded as a control and information centre for the kernel.
@@ -310,7 +311,10 @@ We'll be handing this assignment in through GIT, details for how this will work 
   \url{ http://www.ubuntu.com/download/server}.
   \newblock Online; accessed 21-August-2014.
   
- 
+  \bibitem{proc} Linux Filesystem Hierarchy
+  	\newblock "Chapter 1: Linux Filesystem Hierarchy - 1.14. /proc
+	\newblock \url{http://www.tldp.org/LDP/Linux-Filesystem-Hierarchy/html/proc.html}
+	\newblock Online; accessed 20-January-2015.
    
   
 \bibitem{tldp} Linux Loadable Kernel Module HOWTO
