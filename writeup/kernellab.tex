@@ -165,9 +165,9 @@ Makefile  modules.order  Module.symvers
 The only generated file that we care about is the \texttt{hello.ko} file, which is a kernel object file. We can now install the generated helloworld kernel module by using the \texttt{insmod} command:
 
 \begin{verbatim}
-~/helloworld# insmod hello.ko
-~/helloworld# rmmod hello
-~/helloworld# dmesg | tail
+~/helloworld$ sudo insmod hello.ko
+~/helloworld$ sudo rmmod hello
+~/helloworld$ dmesg | tail
 ...
 [ 6814.354580] Hello world!
 [ 6819.571911] Cleaning up module.
@@ -178,7 +178,7 @@ In the above example, I inserted the Hello World kernel module, immediately remo
 You may see a warning in the \texttt{dmesg} output:
 
 \begin{verbatim}
-~# dmesg | tail
+~$ dmesg | tail
 ...
 [  258.556284] hello: module verification failed: signature and/or  
 	required key missing - tainting kernel
@@ -203,21 +203,21 @@ When we insert your module for grading it should create a new entry in the /proc
 We should then be able to cat or examine the contents of that file and it should provide us the number of page faults that the operating system has handled since it booted. As an example:
 
 \begin{verbatim}
-~# ls -al /proc/num_pagefaults
+~$ ls -al /proc/num_pagefaults
 ls: /proc/num_pagefaults: No such file or directory
-~# insmod ./pagefault.ko 
-~# ls -al /proc/num_pagefaults
+~$ insmod ./pagefault.ko 
+~$ ls -al /proc/num_pagefaults
 -r--r--r--  1 root root 37 August 22 21:38 /proc/num_pagefaults
-~# cat /proc/num_pagefaults 
+~$ cat /proc/num_pagefaults 
 658103
-~# cat /proc/num_pagefaults 
+~$ cat /proc/num_pagefaults 
 658295
-~# cat /proc/num_pagefaults 
+~$ cat /proc/num_pagefaults 
 658485
-~# rmmod page_fault_module
-~# ls -al /proc/num_pagefaults
+~$ rmmod page_fault_module
+~$ ls -al /proc/num_pagefaults
 ls: /proc/num_pagefaults: No such file or directory
-~#
+~$
 \end{verbatim}
 
 It's worth thinking of this problem in a few steps:
