@@ -81,14 +81,14 @@ These commands update the package list to make sure we have the most up-to-date 
 
 The \texttt{sudo} in the previous commands indicate we are invoking the given commands as the root user. \texttt{sudo} only works if your user account has sudoer privileges; if not, you will receive a message indicating the user is not in the sudoers file. This is usually not an issue in standard installation, but if you encounter this message, it is simple to give the current user permission to run commands with \texttt{sudo} \cite{sudoers}.
 
-Once the build environment is set up, you will need to download the source code for the Linux kernel you are currently running (we aren't trying to compile and install a newer kernel, just re-compile the current kernel). Downloading the source code for the Linux kernel a simple process, and very common for people who are running user-built (instead of package-maintained) Linux distros. Gentoo Linux is an example of such a distro if you are interested \cite{gentoo}.
+Once the build environment is set up, you will need to download the source code for the Linux kernel you are currently running (we aren't trying to compile and install a newer kernel, just re-compile the current kernel). Downloading the source code for the Linux kernel is a simple process, and very common for people who are running user-built (instead of package-maintained) Linux distros. Gentoo Linux is an example of such a distro if you are interested \cite{gentoo}.
 
 To get the source code for the currently running Linux kernel on Ubuntu 14.04, we will use \texttt{apt-get}, which will obtain the source for a specific binary package it provides: 
 
 \begin{verbatim}
-$ mkdir kernel-assignment
-$ cd kernel-assignment
-$ apt-get source linux-image-$(uname -r)
+~$ mkdir kernel-assignment
+~$ cd kernel-assignment
+~/kernel-assignment$ apt-get source linux-image-$(uname -r)
 \end{verbatim}
 
 It is also common practice to obtain the Linux kernel source by checking out the current kernel source from the source tree on the official Linux git repository, but this assignment was tested with the apt-get approach so that's what I'm giving for the instructions. The references contain a link to an Ubuntu wiki article about building your own kernel that has the git commands if you want to know what they are \cite{ubuntukernel}.
@@ -96,12 +96,12 @@ It is also common practice to obtain the Linux kernel source by checking out the
 The \texttt{apt-get} command will take a few minutes to download the Linux source code. When the download process finishes, you should have some additional files and a source code folder in the current working directory:
 
 \begin{verbatim}
-$ ls -l
+~/kernel-assignment$ ls -l
 total 121428
-drwxr-xr-x 26 root root      4096 Aug 21 12:00 linux-3.13.0
--rw-r--r--  1 root root   7902814 Aug 13 15:58 linux_3.13.0-34.60.diff.gz
--rw-r--r--  1 root root     11781 Aug 13 15:58 linux_3.13.0-34.60.dsc
--rw-r--r--  1 root root 116419243 Feb  3  2014 linux_3.13.0.orig.tar.gz
+drwxr-xr-x 26 user users      4096 Aug 21 12:00 linux-3.13.0
+-rw-r--r--  1 user users   7902814 Aug 13 15:58 linux_3.13.0-34.60.diff.gz
+-rw-r--r--  1 user users     11781 Aug 13 15:58 linux_3.13.0-34.60.dsc
+-rw-r--r--  1 user users 116419243 Feb  3  2014 linux_3.13.0.orig.tar.gz
 \end{verbatim}
 
 We are not going to modify the kernel's configuration, so we can now move to building the new kernel. Ubuntu does this a bit differently than other kernels I've built, which usually have a \texttt{make} directive to make the configuration, which can be the default or modified by you, and a second \texttt{make} directive to build the kernel. In this case, we will build the kernel using the following commands:
@@ -112,16 +112,31 @@ $ fakeroot debian/rules clean
 $ fakeroot debian/rules binary-headers binary-generic
 \end{verbatim}
 
-The first step above changes the working directory to be the root of the kernel source tree, which is the \texttt{linux-3.13.0} folder in this case. The build commands will take quite a while to run; on my fastest computer this build took an hour and half to build the \texttt{.deb} files. 
+The first step above changes the working directory to be the root of the kernel source tree, which is the \texttt{linux-3.13.0} folder in this case. The build commands will take quite a while to run; on my fastest computer, it took an hour and half to build the \texttt{.deb} files. If you get errors during the compilation, please post about them in the class discussion board and see me in office hours or during lab so we can track down and fix the issue.
 
-When the build process is complete (hopefully without any errors), there will be numerous \texttt{.deb} files in the parent directory of the kernel source tree (this parent directory will be the \texttt{kernel-assignement} directory we created when downloading the kernel source code). The \texttt{.deb} files contain the compiled kernel, which we can now install and run (after rebooting). If you get errors during the compilation, please post about them in the class discussion board and see me in office hours or during lab so we can track down and fix the issue.
-
-Now let's install and test the new kernel. To do this we will use the following commands:
+When the build process is complete (hopefully without any errors), there will be numerous \texttt{.deb} files in the parent directory of the kernel source tree (this parent directory will be the \texttt{kernel-assignement} directory we created when downloading the kernel source code):
 
 \begin{verbatim}
-$ sudo dpkg -i linux-headers-*.deb
-$ sudo dpkg -i linux-image-*.deb
-$ sudo reboot
+~/kernel-assignment/linux-3.13.0$ cd ..
+~/kernel-assignment$ ls -l
+drwxr-xr-x 26 user users      4096 Jan 22 15:08 linux-3.13.0
+-rw-r--r--  1 user users   8405184 Dec 16 13:03 linux_3.13.0-34.60.diff.gz
+-rw-r--r--  1 user users     11783 Dec 16 13:03 linux_3.13.0-34.60.dsc
+-rw-r--r--  1 user users 116419243 Feb  3  2014 linux_3.13.0.orig.tar.gz
+-rw-r--r--  1 user users    174210 Jan 22 15:09 linux-cloud-tools-3.13.0-xxx.deb
+-rw-r--r--  1 user users   9058856 Jan 22 14:34 linux-headers-3.13.0-xxx.deb
+-rw-r--r--  1 user users    865124 Jan 22 15:09 linux-headers-3.13.0-xxx.deb
+-rw-r--r--  1 user users  15483680 Jan 22 15:09 linux-image-3.13.0-xxx.deb
+-rw-r--r--  1 user users  36949560 Jan 22 15:09 linux-image-extra-3.13.0-xxx.deb
+-rw-r--r--  1 user users    174282 Jan 22 15:09 linux-tools-3.13.0-44-xxx.deb
+\end{verbatim}
+
+The \texttt{.deb} files contain the compiled kernel, which we can now install and run (after rebooting). To install the new kernel, we will use the following commands:
+
+\begin{verbatim}
+~/kernel-assignment$ sudo dpkg -i linux-headers-*.deb
+~/kernel-assignment$ sudo dpkg -i linux-image-*.deb
+~/kernel-assignment$ sudo reboot
 \end{verbatim}
 
 After the computer reboots, we'll be using the new kernel you compiled. You can now brag about your \emph{1337} or \emph{leet} status as a CS major and the fact you have compiled the Linux kernel from source. 
