@@ -73,11 +73,12 @@ Once Ubuntu is installed, you will need to set up the installation's build envir
 
 \begin{verbatim}
 $ sudo apt-get update
+$ sudo apt-get dist-upgrade
 $ sudo apt-get install build-essential
 $ sudo apt-get build-dep linux-image-$(uname -r)
 \end{verbatim}
 
-These commands update the package list to make sure we have the most up-to-date list of packages, install some general-purpose build tools, and finally install the build dependencies for the Linux kernel itself. In this way, we insure all the necessary tools to download, build, and install the new Linux kernel are available on the system.
+These commands update the package list to make sure we have the most up-to-date list of packages, install the latest versions of all installed software, install some general-purpose build tools, and finally install the build dependencies for the Linux kernel itself. In this way, we insure all the necessary tools to download, build, and install the new Linux kernel are available on the system.
 
 The \texttt{sudo} in the previous commands indicate we are invoking the given commands as the root user. \texttt{sudo} only works if your user account has sudoer privileges; if not, you will receive a message indicating the user is not in the sudoers file. This is usually not an issue in standard installation, but if you encounter this message, it is simple to give the current user permission to run commands with \texttt{sudo} \cite{sudoers}.
 
@@ -274,6 +275,12 @@ pgfault 2301445
 \end{quote}
 
 Instead of performing standard file I/O, we need to register event handlers for various events. The \texttt{seqfile} API introduced in Linux 3.10 is quite useful for this. \url{https://github.com/torvalds/linux/blob/master/fs/proc/version.c} is a simple example that can be readily adapted to complete the pagefault portion of the assignment.
+\begin{item} The only function you really need to get the pagefault stat is \texttt{all\_vm\_events}\cite{vmevents}, which populates an array of longs with various statistical information. You just need to invoke the function, then index to the correct array element in the result; in our case, PGFAULT is the index we need. Examples of \texttt{all\_vm\_events} usage are available in the Linux kernel source\cite{vmeventsusage}.
+
+
+You'll need to \texttt{\#include <linux/mm.h>} in your kernel module to access the \texttt{all\_vm\_events} function.
+\end{item}
+\item \texttt{seq\_printf} uses the same format specifiers as \texttt{printf}. The format specifier for an unsigned long is just a Google search away.
 \end{enumerate}
 
 \section*{Evaluation}
@@ -326,17 +333,24 @@ We'll be handing this assignment in through GIT, details for how this will work 
   \url{ http://www.ubuntu.com/download/server}.
   \newblock Online; accessed 21-August-2014.
   
-  \bibitem{proc} Linux Filesystem Hierarchy
-  	\newblock "Chapter 1: Linux Filesystem Hierarchy - 1.14. /proc
-	\newblock \url{http://www.tldp.org/LDP/Linux-Filesystem-Hierarchy/html/proc.html}
-	\newblock Online; accessed 20-January-2015.
-   
+\bibitem{proc} Linux Filesystem Hierarchy
+  \newblock "Chapter 1: Linux Filesystem Hierarchy - 1.14. /proc
+  \newblock \url{http://www.tldp.org/LDP/Linux-Filesystem-Hierarchy/html/proc.html}
+  \newblock Online; accessed 20-January-2015.  
   
 \bibitem{tldp} Linux Loadable Kernel Module HOWTO
   \newblock ``Introduction to Linux Loadable Kernel Modules''.
   \newblock
   \url{http://www.tldp.org/HOWTO/Module-HOWTO/x73.html}.
   \newblock Online; accessed 21-August-2014.
+
+\bibitem{vmevents}
+  \url{https://github.com/torvalds/linux/blob/33caee39925b887a99a2400dc5c980097c3573f9/mm/vmstat.c#L50}.
+  \newblock Online; accessed 27-January-2015.
+
+\bibitem{vmeventsusage}
+  \url{https://github.com/torvalds/linux/blob/9a3c4145af32125c5ee39c0272662b47307a8323/arch/s390/appldata/appldata_mem.c#L75}.
+  \newblock Online; accessed 27-January-2015.
 
 \end{thebibliography}
 \end{document}
