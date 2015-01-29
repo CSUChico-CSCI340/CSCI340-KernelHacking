@@ -274,7 +274,7 @@ pgfault 2301445
 /proc is very special in that it is also a virtual filesystem. It's sometimes referred to as a process information pseudo-file system. It doesn't contain 'real' files but runtime system information (e.g. system memory, devices mounted, hardware configuration, etc). For this reason it can be regarded as a control and information centre for the kernel.
 \end{quote}
 
-Instead of performing standard file I/O, we need to register event handlers for various events. The \texttt{seqfile} API introduced in Linux 3.10 is quite useful for this. \url{https://github.com/torvalds/linux/blob/master/fs/proc/version.c} is a simple example that can be readily adapted to complete the pagefault portion of the assignment.
+Instead of performing standard file I/O, we need to register event handlers for various events. The \texttt{seq\_file} API\cite{seqfile} introduced in Linux 3.10 is quite useful for this. \url{https://github.com/torvalds/linux/blob/master/fs/proc/version.c} is a simple example that can be readily adapted to complete the pagefault portion of the assignment.
 \begin{item} The only function you really need to get the pagefault stat is \texttt{all\_vm\_events}\cite{vmevents}, which populates an array of longs with various statistical information. You just need to invoke the function, then index to the correct array element in the result; in our case, PGFAULT is the index we need. Examples of \texttt{all\_vm\_events} usage are available in the Linux kernel source\cite{vmeventsusage}.
 
 
@@ -343,6 +343,12 @@ We'll be handing this assignment in through GIT, details for how this will work 
   \newblock
   \url{http://www.tldp.org/HOWTO/Module-HOWTO/x73.html}.
   \newblock Online; accessed 21-August-2014.
+
+\bibitem{seqfile}
+  \newblock ``Manage /proc file with seq\_file''.
+  \newblock
+  \url{http://www.tldp.org/LDP/lkmpg/2.6/html/x861.html}.
+  \newblock Online; accessed 29-January-2015.
 
 \bibitem{vmevents}
   \url{https://github.com/torvalds/linux/blob/33caee39925b887a99a2400dc5c980097c3573f9/mm/vmstat.c#L50}.
