@@ -298,12 +298,11 @@ You will be graded based on your success in completing various steps of this ass
 
 \section*{Hand In Instructions}
 
-You will need to submit your assignment by committing your code, and compiled {\tt .deb} and {\tt .ko} files to the GitHub private repo you were invited to. Your repo should be part of the "{\tt CSUChico-CSCI340}" organization on GitHub, if this is not the case you have put your files in the wrong repository. If you do not have a repository in this organization send me an email letting me know along with your GitHub username. 
+You will need to submit your assignment by committing your code, and compiled {\tt .deb} and {\tt .ko} files to the GitHub private repo you were invited to. Your repo must be part of the {\tt CSUChico-CSCI340} organization on GitHub; if this is not the case, you have put your files in the wrong repository. If you do not have a repository in this organization, send me an email letting me know along with your GitHub username. 
 
-The files should be organized with the source files for your kernel module in a {\tt src/} folder in your repo. And the compiled debian ({\tt .deb}) files and kernel object ({\tt .ko}) files in the root directory.  
+The files should be organized with the source files for your kernel module in a {\tt src/} folder in your repo, and the compiled dpkg ({\tt .deb}) files and kernel object ({\tt .ko}) files in the root directory.  
 
-As an example your git repo directory and file structure should like this:
-
+Here is an example of a correctly structured repository:
 \begin{verbatim}
 /
 ....src/
@@ -313,11 +312,16 @@ As an example your git repo directory and file structure should like this:
 ........hello.c
 ........Makefile
 ....hello.ko
-....linux-cloud-tools-3.13.0-xxx.deb....linux-headers-3.13.0-xxx.deb....linux-headers-3.13.0-xxx.deb....linux-image-3.13.0-xxx.deb....linux-image-extra-3.13.0-xxx.deb....linux-tools-3.13.0-44-xxx.deb
+....linux-cloud-tools-3.13.0-xxx.deb
+....linux-headers-3.13.0-xxx.deb
+....linux-headers-3.13.0-xxx.deb
+....linux-image-3.13.0-xxx.deb
+....linux-image-extra-3.13.0-xxx.deb
+....linux-tools-3.13.0-44-xxx.deb
 ....numpagefaults.ko
 \end{verbatim}
 
-You should name your {\tt .ko} files as shown above to make it easier on the graders to easily check your code. And all of your source code for your kernel module should be in the {\tt src/} folder as shown. You can name your source files anyway you choose, but the compiled files should be as shown.
+For ease of grading, you should name your {\tt .ko} files as shown. All of the source code for your kernel module must be in the {\tt src/} folder as shown. You can name your source files any way you choose, but the compiled files must be named as shown.
 \newpage
 
 \begin{thebibliography}{3}
