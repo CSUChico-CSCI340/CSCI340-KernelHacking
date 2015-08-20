@@ -195,6 +195,7 @@ We should then be able to cat or examine the contents of that file and it should
 </pre>
 
 It’s worth thinking of this problem in a few steps:
+
 1. Read about how the /proc filesystem works
 2. Figure out how you write information to a /proc file
 3. Write a kernel module that successfully prints a fixed string when one cat’s the /proc/num pagefaults file.
