@@ -8,7 +8,7 @@ By Bryan Dixon
 
 The purpose of this assignment is for you to become more familiar with how kernel modules are written and aspects of the Linux operating system using these modules.
 Logistics
-The only “hand-in” will be electronic. Any clarifications and revisions to the assignment will be posted on my web page and announced to the class via Piazza.
+The only “hand-in” will be electronic. Any clarifications and revisions to the assignment will be modified here and announced to the class via Piazza.
 
 ##Hand Out Instructions
 For this assignment you will want to use a virtual machine (VM); however, if you are running a native install of 64bit Ubuntu 14.04.3 LTS you should be able to do this without using a VM. I would recommend using a VM as we are going to be modifying privileged code and you could potentially corrupt your native system if you aren’t using a VM.
