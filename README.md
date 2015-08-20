@@ -52,16 +52,17 @@ Once the build environment is set up, you will need to download the source code 
 To get the source code for the currently running Linux kernel on Ubuntu 14.04, we will use apt-get, which will obtain the source for a specific binary package it provides:
 
 <pre>
-    ̃$ mkdir kernel-assignment
-    ̃$ cd kernel-assignment
-    ̃/kernel-assignment$ apt-get source linux-image-$(uname -r)
+   ~$ mkdir kernel-assignment
+   ~$ cd kernel-assignment
+   ~/kernel-assignment$ apt-get source linux-image-$(uname -r)
 </pre>
 
 It is also common practice to obtain the Linux kernel source by checking out the current kernel source from the source tree on the official Linux git repository, but this assignment was tested with the apt-get approach so that’s what I’m giving for the instructions. The references contain a link to an Ubuntu wiki article about building your own kernel that has the git commands if you want to know what they are [5].
+
 The apt-get command will take a few minutes to download the Linux source code. When the download process finishes, you should have some additional files and a source code folder in the current working directory:
 
 <pre>
-   ̃/kernel-assignment$ ls -l
+  ~/kernel-assignment$ ls -l
   total 121428
   drwxr-xr-x 26 user users      4096 Aug 21 12:00 linux-3.13.0
   -rw-r--r--  1 user users   7902814 Aug 13 15:58 linux_3.13.0-34.60.diff.gz
@@ -70,28 +71,39 @@ The apt-get command will take a few minutes to download the Linux source code. W
 </pre>
 
 We are not going to modify the kernel’s configuration, so we can now move to building the new kernel. Ubuntu does this a bit differently than other kernels I’ve built, which usually have a make directive to make the configuration, which can be the default or modified by you, and a second make directive to build the kernel. In this case, we will build the kernel using the following commands:
-$ cd linux-3.13.0
-$ fakeroot debian/rules clean
-$ fakeroot debian/rules binary-headers binary-generic
+
+<pre>
+  $ cd linux-3.13.0
+  $ fakeroot debian/rules clean
+  $ fakeroot debian/rules binary-headers binary-generic
+</pre>
+
 The first step above changes the working directory to be the root of the kernel source tree, which is the linux-3.13.0 folder in this case. The build commands will take quite a while to run; on my fastest computer, it took an hour and half to build the .deb files. If you get errors during the compilation, please post about them in the class discussion board and see me in office hours or during lab so we can track down and fix the issue.
 When the build process is complete (hopefully without any errors), there will be numerous .deb files in the parent directory of the kernel source tree (this parent directory will be the kernel-assignement directory we created when downloading the kernel source code):
-3
- ̃/kernel-assignment/linux-3.13.0$ cd ..
- ̃/kernel-assignment$ ls -l
-drwxr-xr-x 26 user users      4096 Jan 22 15:08 linux-3.13.0
--rw-r--r--  1 user users   8405184 Dec 16 13:03 linux_3.13.0-34.60.diff.gz
--rw-r--r--  1 user users     11783 Dec 16 13:03 linux_3.13.0-34.60.dsc
--rw-r--r--  1 user users 116419243 Feb  3  2014 linux_3.13.0.orig.tar.gz
--rw-r--r--  1 user users    174210 Jan 22 15:09 linux-cloud-tools-3.13.0-xxx.deb
--rw-r--r--  1 user users   9058856 Jan 22 14:34 linux-headers-3.13.0-xxx.deb
--rw-r--r--  1 user users    865124 Jan 22 15:09 linux-headers-3.13.0-xxx.deb
--rw-r--r--  1 user users  15483680 Jan 22 15:09 linux-image-3.13.0-xxx.deb
--rw-r--r--  1 user users  36949560 Jan 22 15:09 linux-image-extra-3.13.0-xxx.deb
--rw-r--r--  1 user users    174282 Jan 22 15:09 linux-tools-3.13.0-44-xxx.deb
+
+<pre>
+  ~/kernel-assignment/linux-3.13.0$ cd ..
+  ~/kernel-assignment$ ls -l
+  drwxr-xr-x 26 user users      4096 Jan 22 15:08 linux-3.13.0
+  -rw-r--r--  1 user users   8405184 Dec 16 13:03 linux_3.13.0-34.60.diff.gz
+  -rw-r--r--  1 user users     11783 Dec 16 13:03 linux_3.13.0-34.60.dsc
+  -rw-r--r--  1 user users 116419243 Feb  3  2014 linux_3.13.0.orig.tar.gz
+  -rw-r--r--  1 user users    174210 Jan 22 15:09 linux-cloud-tools-3.13.0-xxx.deb
+  -rw-r--r--  1 user users   9058856 Jan 22 14:34 linux-headers-3.13.0-xxx.deb
+  -rw-r--r--  1 user users    865124 Jan 22 15:09 linux-headers-3.13.0-xxx.deb
+  -rw-r--r--  1 user users  15483680 Jan 22 15:09 linux-image-3.13.0-xxx.deb
+  -rw-r--r--  1 user users  36949560 Jan 22 15:09 linux-image-extra-3.13.0-xxx.deb
+  -rw-r--r--  1 user users    174282 Jan 22 15:09 linux-tools-3.13.0-44-xxx.deb
+</pre>
+
 The .deb files contain the compiled kernel, which we can now install and run (after rebooting). To install the new kernel, we will use the following commands:
- ̃/kernel-assignment$ sudo dpkg -i linux-headers-*.deb
- ̃/kernel-assignment$ sudo dpkg -i linux-image-*.deb
- ̃/kernel-assignment$ sudo reboot
+
+<pre>
+  ~/kernel-assignment$ sudo dpkg -i linux-headers-*.deb
+  ~/kernel-assignment$ sudo dpkg -i linux-image-*.deb
+  ~/kernel-assignment$ sudo reboot
+</pre>
+
 After the computer reboots, we’ll be using the new kernel you compiled. You can now brag about your 1337 or leet status as a CS major and the fact you have compiled the Linux kernel from source.
 Compile Hello World kernel module
 Now let’s get the Hello World kernel module source and Makefile files from my web server and work on compiling a Linux kernel module. You will need to download the helloworld.tar file from my website:
