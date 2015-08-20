@@ -105,41 +105,66 @@ The .deb files contain the compiled kernel, which we can now install and run (af
 </pre>
 
 After the computer reboots, we’ll be using the new kernel you compiled. You can now brag about your 1337 or leet status as a CS major and the fact you have compiled the Linux kernel from source.
-Compile Hello World kernel module
+
+##Compile Hello World kernel module
 Now let’s get the Hello World kernel module source and Makefile files from my web server and work on compiling a Linux kernel module. You will need to download the helloworld.tar file from my website:
-http://bryancdixon.com/site_media/Fall2014/CSCI340/helloworld.tar
-You could download the file from the link above to your local computer, but I would recommend download- ing it directly to your Ubuntu VM so you can make use of it with having to worry about copying the files onto the VM. To do this you can use the wget command with that URL as the argument to the command and it’ll download the helloworld.tar file to your current working directory.
+
+[http://bryancdixon.com/site_media/Fall2014/CSCI340/helloworld.tar](http://bryancdixon.com/site_media/Fall2014/CSCI340/helloworld.tar)
+
+You could download the file from the link above to your local computer, but I would recommend downloading it directly to your Ubuntu VM so you can make use of it with having to worry about copying the files onto the VM. To do this you can use the wget command with that URL as the argument to the command and it’ll download the helloworld.tar file to your current working directory.
 Once you have the tar file you will want to extract it:
- ̃$ tar xvf helloworld.tar
-x helloworld/
-x helloworld/hello.c
-x helloworld/Makefile
+
+<pre>
+  ~$ wget http://bryancdixon.com/site_media/Fall2014/CSCI340/helloworld.tar
+  ~$ tar xvf helloworld.tar
+  x helloworld/
+  x helloworld/hello.c
+  x helloworld/Makefile
+</pre>
+
 You should now have a helloworld folder in your current working directory. At this point you’ll want to likely take a look at the helloworld.c source file and the Makefile to familiarize yourself with the workings of these two files. These two files are also a good starting point for the final part of this assignment.
-4
+
 To build the Hello World kernel module you will need to change your working directory to be in the helloworld folder. Building kernel module is as simple as just typing make:
-$ cd helloworld
-$ make
+
+<pre>
+  $ cd helloworld
+  $ make
+</pre>
+
 This will build numerous files:
- ̃/helloworld$ ls
-hello.c  hello.ko  hello.mod.c  hello.mod.o  hello.o
-Makefile  modules.order  Module.symvers
+
+<pre>
+  ~/helloworld$ ls
+  hello.c  hello.ko  hello.mod.c  hello.mod.o  hello.o
+  Makefile  modules.order  Module.symvers
+</pre>
+
 The only generated file that we care about is the hello.ko file, which is a kernel object file. We can now install the generated helloworld kernel module by using the insmod command:
- ̃/helloworld$ sudo insmod hello.ko
- ̃/helloworld$ sudo rmmod hello
- ̃/helloworld$ dmesg | tail
-...
-[ 6814.354580] Hello world!
-[ 6819.571911] Cleaning up module.
-In the above example, I inserted the Hello World kernel module, immediately removed it with the rmmod command, and finally inspected the dmesg output to find the printk statements that printed ”Hello World!” when the module was installed and the cleanup message when the module was removed. In the above output, this process completed successfully.
+
+<pre>
+  ~/helloworld$ sudo insmod hello.ko
+  ~/helloworld$ sudo rmmod hello
+  ~/helloworld$ dmesg | tail
+  ...
+  [ 6814.354580] Hello world!
+  [ 6819.571911] Cleaning up module.
+</pre>
+
+In the above example, I inserted the Hello World kernel module with the insmod command, immediately removed it with the rmmod command, and finally inspected the dmesg output to find the printk statements that printed ”Hello World!” when the module was installed and the cleanup message when the module was removed. In the above output, this process completed successfully.
 You may see a warning in the dmesg output:
- ̃$ dmesg | tail
-...
-[  258.556284] hello: module verification failed: signature and/or
-required key missing - tainting kernel
-[  258.558168] Hello world!
-[  265.987671] Cleaning up module.
+
+<pre>
+  ~$ dmesg | tail
+  ...
+  [  258.556284] hello: module verification failed: signature and/or
+  required key missing - tainting kernel
+  [  258.558168] Hello world!
+  [  265.987671] Cleaning up module.
+</pre>
+
 This warning can be safely ignored.
-Write your own kernel module
+
+##Write your own kernel module
 Now for the hard part: using the skills you’ve gained in this assignment so far, resources provided later in the hints section, and some details from lab you’ll now need to write your own Linux kernel module to provide us a system statistic in a /proc system file [1].
 When we insert your module for grading it should create a new entry in the /proc filesystem called: 5
 /proc/num_pagefaults
