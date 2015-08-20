@@ -165,25 +165,35 @@ You may see a warning in the dmesg output:
 This warning can be safely ignored.
 
 ##Write your own kernel module
+
 Now for the hard part: using the skills you’ve gained in this assignment so far, resources provided later in the hints section, and some details from lab you’ll now need to write your own Linux kernel module to provide us a system statistic in a /proc system file [1].
-When we insert your module for grading it should create a new entry in the /proc filesystem called: 5
-/proc/num_pagefaults
+
+When we insert your module for grading it should create a new entry in the /proc filesystem called:
+
+<pre>
+  /proc/num_pagefaults
+</pre>
+
 We should then be able to cat or examine the contents of that file and it should provide us the number of page faults that the operating system has handled since it booted. As an example:
- ̃$ ls -al /proc/num_pagefaults
-ls: /proc/num_pagefaults: No such file or directory
- ̃$ insmod ./pagefault.ko
- ̃$ ls -al /proc/num_pagefaults
--r--r--r--  1 root root 37 August 22 21:38 /proc/num_pagefaults
- ̃$ cat /proc/num_pagefaults
-658103
- ̃$ cat /proc/num_pagefaults
-658295
- ̃$ cat /proc/num_pagefaults
-658485
- ̃$ rmmod page_fault_module
- ̃$ ls -al /proc/num_pagefaults
-ls: /proc/num_pagefaults: No such file or directory
- ̃$
+
+<pre>
+  ~$ ls -al /proc/num_pagefaults
+  ls: /proc/num_pagefaults: No such file or directory
+  ~$ insmod ./pagefault.ko
+  ~$ ls -al /proc/num_pagefaults
+  -r--r--r--  1 root root 37 August 22 21:38 /proc/num_pagefaults
+  ~$ cat /proc/num_pagefaults
+  658103
+  ~$ cat /proc/num_pagefaults
+  658295
+  ~$ cat /proc/num_pagefaults
+  658485
+  ~$ rmmod page_fault_module
+  ~$ ls -al /proc/num_pagefaults
+  ls: /proc/num_pagefaults: No such file or directory
+  ~$
+</pre>
+
 It’s worth thinking of this problem in a few steps:
 1. Read about how the /proc filesystem works
 2. Figure out how you write information to a /proc file
@@ -191,8 +201,8 @@ It’s worth thinking of this problem in a few steps:
 4. Locate the kernel code that generates page faults statistics
 5. Write a kernel module that prints that statistic every time someone cat’s the /proc/num pagefaults file.
 Good luck!
-￼￼6
-Hints
+￼￼
+##Hints
 There are quite a few hints for this assignment:
 1. When compiling the Linux kernel, make sure the virtual disk for the VM has plenty of space. The default disk size of 20 GB is probably sufficient.
 2. Take a snapshot of the VM once the base system is installed and configured. This snapshot will be quite handy if something gets fouled up during the process of building the kernel.
@@ -200,58 +210,65 @@ There are quite a few hints for this assignment:
 4. Be sure to successfully complete the kernel compilation portion of the assignment before attempting to compile the Hello World kernel module. In particular, the header files for the Linux kernel must be installed for kernel modules to build correctly.
 5. You will need to find the symbol that has been explicitly exported by the kernel to be accessible to kernel modules; not all functions and variables in the kernel code are accessible to kernel modules. The kernel uses the EXPORT SYMBOL macro to export a particular symbol, so you need to find the specific symbol that’s been exported as such that provides the page fault statistic we want.
 6. You may need to declare your kernel module is licensed under the GPL open source license, as some kernel symbols are only accessible if you have declared your kernel module as being licensed under the GPL license. To declare it you only need to add a single line at the end of your kernel module code[4]:
-    MODULE_LICENSE("GPL");
+<pre>    MODULE_LICENSE("GPL");</pre>
 7. The Linux kernel already includes the page fault statistic in a /proc file, along with numerous other statistics. It is useful to see how this is already done and see if you can modify it to make a new /proc file that contains the current number of page faults only. The following command provides a good reference for the comparing the kernel statistics with those of your kernel module:
      ̃$ cat /proc/vmstat | grep pgfault
     pgfault 2301445
 8. The /proc filesystem is not persistent storage in the same sense as an NTFS or ext3 filesystem, so don’t bother searching for file I/O tutorials. To quote a good reference on the proc system[7]:
 /proc is very special in that it is also a virtual filesystem. It’s sometimes referred to as a process information pseudo-file system. It doesn’t contain ’real’ files but runtime system information (e.g. system memory, devices mounted, hardware configuration, etc). For this reason it can be regarded as a control and information centre for the kernel.
-￼7
+￼
 Instead of performing standard file I/O, we need to register event handlers for various events. The seq file API[9] introduced in Linux 3.10 is quite useful for this. https://github.com/ torvalds/linux/blob/master/fs/proc/version.c is a simple example that can be readily adapted to complete the pagefault portion of the assignment.
 9. The only function you really need to get the pagefault stat is all vm events[10], which populates an array of longs with various statistical information. You just need to invoke the function, then index to the correct array element in the result; in our case, PGFAULT is the index we need. Examples of all vm events usage are available in the Linux kernel source[11].
 You’llneedto#include <linux/mm.h>inyourkernelmoduletoaccesstheallvmevents function.
 10. seq printf uses the same format specifiers as printf. The format specifier for an unsigned long is just a Google search away.
-Evaluation
+
+##Evaluation
 You will be graded based on your success in completing various steps of this assignment. The scoring for this assignment is as follows:
 • 20% If you successfully compile a new kernel from source
 • 40% You also successfully compile the Hello World kernel module
 • 70% You also successfully write your own kernel module that creates the correct /proc file with a fixed value reported.
 • 100% You successfully get everything else working and your kernel module correctly writes the number of page faults to the /proc file requested.
-￼￼￼￼￼￼￼￼8
-Hand In Instructions
-You will need to submit your assignment by committing your code, and compiled .deb and .ko files to the GitHub private repo you were invited to. Your repo must be part of the CSUChico-CSCI340 organization on GitHub; if this is not the case, you have put your files in the wrong repository. If you do not have a repository in this organization, send me an email letting me know along with your GitHub username.
+￼￼￼￼￼￼￼￼
+##Hand In Instructions
+You will need to submit your assignment by committing your code, and compiled .deb and .ko files to the GitHub private repo you were invited to. Your repo must be part of the CSUChico-CSCI340 organization on GitHub; if this is not the case, you have put your files in the wrong repository. If you do not have a repository in this organization, make sure you filled out the GitHub request on my website for this semester.
+
 The files should be organized with the source files for your kernel module in a src/ folder in your repo, and the compiled dpkg (.deb) files and kernel object (.ko) files in the root directory.
 Here is an example of a correctly structured repository:
-/
-....src/
-........numpagefaults.c
-........Makefile
-....helloworld/
-........hello.c
-........Makefile
-....hello.ko
-....linux-cloud-tools-3.13.0-xxx.deb
-....linux-headers-3.13.0-xxx.deb
-....linux-headers-3.13.0-xxx.deb
-....linux-image-3.13.0-xxx.deb
-....linux-image-extra-3.13.0-xxx.deb
-....linux-tools-3.13.0-44-xxx.deb
-....numpagefaults.ko
+
+<pre>
+  /
+  ....src/
+  ........numpagefaults.c
+  ........Makefile
+  ....helloworld/
+  ........hello.c
+  ........Makefile
+  ....hello.ko
+  ....linux-cloud-tools-3.13.0-xxx.deb
+  ....linux-headers-3.13.0-xxx.deb
+  ....linux-headers-3.13.0-xxx.deb
+  ....linux-image-3.13.0-xxx.deb
+  ....linux-image-extra-3.13.0-xxx.deb
+  ....linux-tools-3.13.0-44-xxx.deb
+  ....numpagefaults.ko
+</pre>
+
 For ease of grading, you should name your .ko files as shown. All of the source code for your kernel module must be in the src/ folder as shown. You can name your source files any way you choose, but the compiled files must be named as shown.
-9
-References
-[1] Steve Gribble CSE551 Spring 2007 - Programming Assignment #2 https://courses.cs. washington.edu/courses/cse551/07sp/programming/a2.html. Online; accessed 22- August-2014
-[2] Allowing other users to run sudo https://help.ubuntu.com/community/RootSudo# Allowing_other_users_to_run_sudo. Online; accessed 19-January-2015.
-[3] Gentoo Linux https://www.gentoo.org/. Online; accessed 21-August-2014.
-[4] The GNU General Public License http://www.gnu.org/copyleft/gpl.html Online; ac-
+
+
+##References
+1. Steve Gribble CSE551 Spring 2007 - Programming Assignment #2 https://courses.cs. washington.edu/courses/cse551/07sp/programming/a2.html. Online; accessed 22- August-2014
+2. Allowing other users to run sudo https://help.ubuntu.com/community/RootSudo# Allowing_other_users_to_run_sudo. Online; accessed 19-January-2015.
+3. Gentoo Linux https://www.gentoo.org/. Online; accessed 21-August-2014.
+4. The GNU General Public License http://www.gnu.org/copyleft/gpl.html Online; ac-
 cessed 23-August-2014
-[5] Ubuntu Wiki “Build Your Own Kernel”. https://wiki.ubuntu.com/Kernel/
+5. Ubuntu Wiki “Build Your Own Kernel”. https://wiki.ubuntu.com/Kernel/
 BuildYourOwnKernel. Online; accessed 21-August-2014.
-[6] Ubuntu “Download Ubuntu Server 14.04.1 LTS”. http://www.ubuntu.com/download/
+6. Ubuntu “Download Ubuntu Server 14.04.1 LTS”. http://www.ubuntu.com/download/
 server. Online; accessed 21-August-2014.
-[7] Linux Filesystem Hierarchy ”Chapter 1: Linux Filesystem Hierarchy - 1.14. /proc http://www. tldp.org/LDP/Linux-Filesystem-Hierarchy/html/proc.html Online; accessed 20- January-2015.
-[8] Linux Loadable Kernel Module HOWTO “Introduction to Linux Loadable Kernel Modules”. http: //www.tldp.org/HOWTO/Module-HOWTO/x73.html. Online; accessed 21-August-2014.
-[9] “Manage /proc file with seq file”. http://www.tldp.org/LDP/lkmpg/2.6/html/x861. html. Online; accessed 29-January-2015.
-[10] https://github.com/torvalds/linux/blob/33caee39925b887a99a2400dc5c980097c3573f9 mm/vmstat.c#L50. Online; accessed 27-January-2015.
-[11] https://github.com/torvalds/linux/blob/9a3c4145af32125c5ee39c0272662b47307a8323 arch/s390/appldata/appldata_mem.c#L75. Online; accessed 27-January-2015.
-￼10
+7. Linux Filesystem Hierarchy ”Chapter 1: Linux Filesystem Hierarchy - 1.14. /proc http://www. tldp.org/LDP/Linux-Filesystem-Hierarchy/html/proc.html Online; accessed 20- January-2015.
+8. Linux Loadable Kernel Module HOWTO “Introduction to Linux Loadable Kernel Modules”. http: //www.tldp.org/HOWTO/Module-HOWTO/x73.html. Online; accessed 21-August-2014.
+9. “Manage /proc file with seq file”. http://www.tldp.org/LDP/lkmpg/2.6/html/x861. html. Online; accessed 29-January-2015.
+10. https://github.com/torvalds/linux/blob/33caee39925b887a99a2400dc5c980097c3573f9 mm/vmstat.c#L50. Online; accessed 27-January-2015.
+11. https://github.com/torvalds/linux/blob/9a3c4145af32125c5ee39c0272662b47307a8323 arch/s390/appldata/appldata_mem.c#L75. Online; accessed 27-January-2015.
+￼
