@@ -200,8 +200,9 @@ It’s worth thinking of this problem in a few steps:
 3. Write a kernel module that successfully prints a fixed string when one cat’s the /proc/num pagefaults file.
 4. Locate the kernel code that generates page faults statistics
 5. Write a kernel module that prints that statistic every time someone cat’s the /proc/num pagefaults file.
+
 Good luck!
-￼￼
+
 ##Hints
 There are quite a few hints for this assignment:
 
