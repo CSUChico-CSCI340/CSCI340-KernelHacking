@@ -1,5 +1,6 @@
 #Writing a Kernel Module
 California State University - Chico
+
 By Bryan Dixon
 ***
 
@@ -17,7 +18,7 @@ There are no handout files for this assignment; however, on my webpage for this 
 There are two main ways to add code to the Linux kernel. One way is to choose or add code to compile into the kernel during the compilation process. The other method is to add the code to the Linux kernel while it is running, which is what a loadable kernel module is [8].
 
 For more information on Linux kernel modules, I highly recommend reading this extremely good introduc- tion to Linux Loadable Kernel Modules and how they are commonly used:
-[http://www.tldp.org/HOWTO/Module-HOWTO/x73.html]{http://www.tldp.org/HOWTO/Module-HOWTO/x73.html}
+[http://www.tldp.org/HOWTO/Module-HOWTO/x73.html](http://www.tldp.org/HOWTO/Module-HOWTO/x73.html)
 
 ##Your Task
 For this assignment you will be doing the following:
@@ -35,26 +36,39 @@ In this document we will walk through the steps to do items 1-3 above. The code 
 Your first step will be to download and install Ubuntu 14.04.1 64bit [6] onto your computer or VM (the Desktop and Server variants of Ubuntu will both work, but the Server variant is recommended because it requires less disk space). If you need help with this step please ask me to show you in lab or come to my office hours.
 Once Ubuntu is installed, you will need to set up the installation’s build environment by running the follow- ing commands in a terminal window:
 
+<pre>
   $ sudo apt-get update
   $ sudo apt-get dist-upgrade
   $ sudo apt-get install build-essential
   $ sudo apt-get build-dep linux-image-$(uname -r)
+</pre>
 
-These commands update the package list to make sure we have the most up-to-date list of packages, install the latest versions of all installed software, install some general-purpose build tools, and finally install the build dependencies for the Linux kernel itself. In this way, we insure all the necessary tools to download, build, and install the new Linux kernel are available on the system. The sudo in the previous commands indicate we are invoking the given commands as the root user. sudo only works if your user account has sudoer privileges; if not, you will receive a message indicating the user is not in the sudoers file. This is usually not an issue in standard installation, but if you encounter this message, it is simple to give the current user permission to run commands with sudo [2].
+These commands update the package list to make sure we have the most up-to-date list of packages, install the latest versions of all installed software, install some general-purpose build tools, and finally install the build dependencies for the Linux kernel itself. In this way, we insure all the necessary tools to download, build, and install the new Linux kernel are available on the system.
+
+The sudo in the previous commands indicate we are invoking the given commands as the root user. sudo only works if your user account has sudoer privileges; if not, you will receive a message indicating the user is not in the sudoers file. This is usually not an issue in standard installation, but if you encounter this message, it is simple to give the current user permission to run commands with sudo [2].
 
 Once the build environment is set up, you will need to download the source code for the Linux kernel you are currently running (we aren’t trying to compile and install a newer kernel, just re-compile the current kernel). Downloading the source code for the Linux kernel is a simple process, and very common for people who are running user-built (instead of package-maintained) Linux distros. Gentoo Linux is an example of such a distro if you are interested [3].
+
 To get the source code for the currently running Linux kernel on Ubuntu 14.04, we will use apt-get, which will obtain the source for a specific binary package it provides:
- ̃$ mkdir kernel-assignment
- ̃$ cd kernel-assignment
- ̃/kernel-assignment$ apt-get source linux-image-$(uname -r)
+
+<pre>
+    ̃$ mkdir kernel-assignment
+    ̃$ cd kernel-assignment
+    ̃/kernel-assignment$ apt-get source linux-image-$(uname -r)
+</pre>
+
 It is also common practice to obtain the Linux kernel source by checking out the current kernel source from the source tree on the official Linux git repository, but this assignment was tested with the apt-get approach so that’s what I’m giving for the instructions. The references contain a link to an Ubuntu wiki article about building your own kernel that has the git commands if you want to know what they are [5].
 The apt-get command will take a few minutes to download the Linux source code. When the download process finishes, you should have some additional files and a source code folder in the current working directory:
- ̃/kernel-assignment$ ls -l
-total 121428
-drwxr-xr-x 26 user users      4096 Aug 21 12:00 linux-3.13.0
--rw-r--r--  1 user users   7902814 Aug 13 15:58 linux_3.13.0-34.60.diff.gz
--rw-r--r--  1 user users     11781 Aug 13 15:58 linux_3.13.0-34.60.dsc
--rw-r--r--  1 user users 116419243 Feb  3  2014 linux_3.13.0.orig.tar.gz
+
+<pre>
+   ̃/kernel-assignment$ ls -l
+  total 121428
+  drwxr-xr-x 26 user users      4096 Aug 21 12:00 linux-3.13.0
+  -rw-r--r--  1 user users   7902814 Aug 13 15:58 linux_3.13.0-34.60.diff.gz
+  -rw-r--r--  1 user users     11781 Aug 13 15:58 linux_3.13.0-34.60.dsc
+  -rw-r--r--  1 user users 116419243 Feb  3  2014 linux_3.13.0.orig.tar.gz
+</pre>
+
 We are not going to modify the kernel’s configuration, so we can now move to building the new kernel. Ubuntu does this a bit differently than other kernels I’ve built, which usually have a make directive to make the configuration, which can be the default or modified by you, and a second make directive to build the kernel. In this case, we will build the kernel using the following commands:
 $ cd linux-3.13.0
 $ fakeroot debian/rules clean
