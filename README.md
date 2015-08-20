@@ -220,7 +220,7 @@ There are quite a few hints for this assignment:
 8. The /proc filesystem is not persistent storage in the same sense as an NTFS or ext3 filesystem, so don’t bother searching for file I/O tutorials. To quote a good reference on the proc system[7]:
 /proc is very special in that it is also a virtual filesystem. It’s sometimes referred to as a process information pseudo-file system. It doesn’t contain ’real’ files but runtime system information (e.g. system memory, devices mounted, hardware configuration, etc). For this reason it can be regarded as a control and information centre for the kernel.
 ￼
-Instead of performing standard file I/O, we need to register event handlers for various events. The seq file API[9] introduced in Linux 3.10 is quite useful for this. https://github.com/ torvalds/linux/blob/master/fs/proc/version.c is a simple example that can be readily adapted to complete the pagefault portion of the assignment.
+Instead of performing standard file I/O, we need to register event handlers for various events. The seq file API[9] introduced in Linux 3.10 is quite useful for this. [version.c](https://github.com/torvalds/linux/blob/master/fs/proc/version.c) is a simple example that can be readily adapted to complete the pagefault portion of the assignment.
 9. The only function you really need to get the pagefault stat is all vm events[10], which populates an array of longs with various statistical information. You just need to invoke the function, then index to the correct array element in the result; in our case, PGFAULT is the index we need. Examples of all vm events usage are available in the Linux kernel source[11].
 You’llneedto#include <linux/mm.h>inyourkernelmoduletoaccesstheallvmevents function.
 10. seq printf uses the same format specifiers as printf. The format specifier for an unsigned long is just a Google search away.
@@ -275,4 +275,3 @@ server. Online; accessed 21-August-2014.
 9. “Manage /proc file with seq file”. http://www.tldp.org/LDP/lkmpg/2.6/html/x861. html. Online; accessed 29-January-2015.
 10. https://github.com/torvalds/linux/blob/33caee39925b887a99a2400dc5c980097c3573f9 mm/vmstat.c#L50. Online; accessed 27-January-2015.
 11. https://github.com/torvalds/linux/blob/9a3c4145af32125c5ee39c0272662b47307a8323 arch/s390/appldata/appldata_mem.c#L75. Online; accessed 27-January-2015.
-￼
