@@ -33,7 +33,7 @@ In this document we will walk through the steps to do items 1-3 above. The code 
 
 ##Compile the Linux kernel from source
 
-Your first step will be to download and install Ubuntu 14.04.1 64bit [6] onto your computer or VM (the Desktop and Server variants of Ubuntu will both work, but the Server variant is recommended because it requires less disk space). If you need help with this step please ask me to show you in lab or come to my office hours.
+Your first step will be to download and install Ubuntu 14.04.3 64bit [6] onto your computer or VM (the Desktop and Server variants of Ubuntu will both work, but the Server variant is recommended because it requires less disk space). If you need help with this step please ask me to show you in lab or come to my office hours.
 Once Ubuntu is installed, you will need to set up the installation’s build environment by running the follow- ing commands in a terminal window:
 
 <pre>
