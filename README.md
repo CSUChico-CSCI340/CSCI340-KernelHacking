@@ -63,17 +63,17 @@ The apt-get command will take a few minutes to download the Linux source code. W
 
 <pre>
   ~/kernel-assignment$ ls -l
-  total 121428
-  drwxr-xr-x 26 user users      4096 Aug 21 12:00 linux-3.13.0
-  -rw-r--r--  1 user users   7902814 Aug 13 15:58 linux_3.13.0-34.60.diff.gz
-  -rw-r--r--  1 user users     11781 Aug 13 15:58 linux_3.13.0-34.60.dsc
-  -rw-r--r--  1 user users 116419243 Feb  3  2014 linux_3.13.0.orig.tar.gz
+total 130848
+drwxrwxr-x 27 user users      4096 Aug 30 14:05 linux-lts-vivid-3.19.0
+-rw-rw-r--  1 user users  10858048 Aug 13 08:54 linux-lts-vivid_3.19.0-26.28~14.04.1.diff.gz
+-rw-rw-r--  1 user users      7394 Aug 13 08:54 linux-lts-vivid_3.19.0-26.28~14.04.1.dsc
+-rw-rw-r--  1 user users 123115155 May  6 18:35 linux-lts-vivid_3.19.0.orig.tar.gz
 </pre>
 
 We are not going to modify the kernel’s configuration, so we can now move to building the new kernel. Ubuntu does this a bit differently than other kernels I’ve built, which usually have a make directive to make the configuration, which can be the default or modified by you, and a second make directive to build the kernel. In this case, we will build the kernel using the following commands:
 
 <pre>
-  $ cd linux-3.13.0
+  $ cd linux-lts-vivid-3.19.0/
   $ fakeroot debian/rules clean
   $ fakeroot debian/rules binary-headers binary-generic
 </pre>
@@ -82,18 +82,19 @@ The first step above changes the working directory to be the root of the kernel 
 When the build process is complete (hopefully without any errors), there will be numerous .deb files in the parent directory of the kernel source tree (this parent directory will be the kernel-assignement directory we created when downloading the kernel source code):
 
 <pre>
-  ~/kernel-assignment/linux-3.13.0$ cd ..
+  ~/kernel-assignment/linux-lts-vivid-3.19.0$ cd ..
   ~/kernel-assignment$ ls -l
-  drwxr-xr-x 26 user users      4096 Jan 22 15:08 linux-3.13.0
-  -rw-r--r--  1 user users   8405184 Dec 16 13:03 linux_3.13.0-34.60.diff.gz
-  -rw-r--r--  1 user users     11783 Dec 16 13:03 linux_3.13.0-34.60.dsc
-  -rw-r--r--  1 user users 116419243 Feb  3  2014 linux_3.13.0.orig.tar.gz
-  -rw-r--r--  1 user users    174210 Jan 22 15:09 linux-cloud-tools-3.13.0-xxx.deb
-  -rw-r--r--  1 user users   9058856 Jan 22 14:34 linux-headers-3.13.0-xxx.deb
-  -rw-r--r--  1 user users    865124 Jan 22 15:09 linux-headers-3.13.0-xxx.deb
-  -rw-r--r--  1 user users  15483680 Jan 22 15:09 linux-image-3.13.0-xxx.deb
-  -rw-r--r--  1 user users  36949560 Jan 22 15:09 linux-image-extra-3.13.0-xxx.deb
-  -rw-r--r--  1 user users    174282 Jan 22 15:09 linux-tools-3.13.0-44-xxx.deb
+  total 195148
+-rw-r--r--  1 user users    138484 Aug 30 15:48 linux-cloud-tools-3.19.0-26-generic_3.19.0-26.28~14.04.1_amd64.deb
+-rw-r--r--  1 user users   9448112 Aug 30 14:10 linux-headers-3.19.0-26_3.19.0-26.28~14.04.1_all.deb
+-rw-r--r--  1 user users    864324 Aug 30 15:48 linux-headers-3.19.0-26-generic_3.19.0-26.28~14.04.1_amd64.deb
+-rw-r--r--  1 user users  16831728 Aug 30 15:48 linux-image-3.19.0-26-generic_3.19.0-26.28~14.04.1_amd64.deb
+-rw-r--r--  1 user users  38410732 Aug 30 15:48 linux-image-extra-3.19.0-26-generic_3.19.0-26.28~14.04.1_amd64.deb
+drwxrwxr-x 27 user users      4096 Aug 30 15:47 linux-lts-vivid-3.19.0
+-rw-rw-r--  1 user users  10858048 Aug 13 08:54 linux-lts-vivid_3.19.0-26.28~14.04.1.diff.gz
+-rw-rw-r--  1 user users      7394 Aug 13 08:54 linux-lts-vivid_3.19.0-26.28~14.04.1.dsc
+-rw-rw-r--  1 user users 123115155 May  6 18:35 linux-lts-vivid_3.19.0.orig.tar.gz
+-rw-r--r--  1 user users    138554 Aug 30 15:48 linux-tools-3.19.0-26-generic_3.19.0-26.28~14.04.1_amd64.deb
 </pre>
 
 The .deb files contain the compiled kernel, which we can now install and run (after rebooting). To install the new kernel, we will use the following commands:
