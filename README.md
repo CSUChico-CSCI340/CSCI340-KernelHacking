@@ -62,12 +62,12 @@ It is also common practice to obtain the Linux kernel source by checking out the
 The apt-get command will take a few minutes to download the Linux source code. When the download process finishes, you should have some additional files and a source code folder in the current working directory:
 
 <pre>
-  ~/kernel-assignment$ ls -l
-total 130848
-drwxrwxr-x 27 user users      4096 Aug 30 14:05 linux-lts-vivid-3.19.0
--rw-rw-r--  1 user users  10858048 Aug 13 08:54 linux-lts-vivid_3.19.0-26.28~14.04.1.diff.gz
--rw-rw-r--  1 user users      7394 Aug 13 08:54 linux-lts-vivid_3.19.0-26.28~14.04.1.dsc
--rw-rw-r--  1 user users 123115155 May  6 18:35 linux-lts-vivid_3.19.0.orig.tar.gz
+    ~/kernel-assignment$ ls -l
+    total 130848
+    drwxrwxr-x 27 user users      4096 Aug 30 14:05 linux-lts-vivid-3.19.0
+    -rw-rw-r--  1 user users  10858048 Aug 13 08:54 linux-lts-vivid_3.19.0-26.28~14.04.1.diff.gz
+    -rw-rw-r--  1 user users      7394 Aug 13 08:54 linux-lts-vivid_3.19.0-26.28~14.04.1.dsc
+    -rw-rw-r--  1 user users 123115155 May  6 18:35 linux-lts-vivid_3.19.0.orig.tar.gz
 </pre>
 
 We are not going to modify the kernel’s configuration, so we can now move to building the new kernel. Ubuntu does this a bit differently than other kernels I’ve built, which usually have a make directive to make the configuration, which can be the default or modified by you, and a second make directive to build the kernel. In this case, we will build the kernel using the following commands:
@@ -82,19 +82,19 @@ The first step above changes the working directory to be the root of the kernel 
 When the build process is complete (hopefully without any errors), there will be numerous .deb files in the parent directory of the kernel source tree (this parent directory will be the kernel-assignement directory we created when downloading the kernel source code):
 
 <pre>
-  ~/kernel-assignment/linux-lts-vivid-3.19.0$ cd ..
-  ~/kernel-assignment$ ls -l
-  total 195148
--rw-r--r--  1 user users    138484 Aug 30 15:48 linux-cloud-tools-3.19.0-26-generic_3.19.0-26.28~14.04.1_amd64.deb
--rw-r--r--  1 user users   9448112 Aug 30 14:10 linux-headers-3.19.0-26_3.19.0-26.28~14.04.1_all.deb
--rw-r--r--  1 user users    864324 Aug 30 15:48 linux-headers-3.19.0-26-generic_3.19.0-26.28~14.04.1_amd64.deb
--rw-r--r--  1 user users  16831728 Aug 30 15:48 linux-image-3.19.0-26-generic_3.19.0-26.28~14.04.1_amd64.deb
--rw-r--r--  1 user users  38410732 Aug 30 15:48 linux-image-extra-3.19.0-26-generic_3.19.0-26.28~14.04.1_amd64.deb
-drwxrwxr-x 27 user users      4096 Aug 30 15:47 linux-lts-vivid-3.19.0
--rw-rw-r--  1 user users  10858048 Aug 13 08:54 linux-lts-vivid_3.19.0-26.28~14.04.1.diff.gz
--rw-rw-r--  1 user users      7394 Aug 13 08:54 linux-lts-vivid_3.19.0-26.28~14.04.1.dsc
--rw-rw-r--  1 user users 123115155 May  6 18:35 linux-lts-vivid_3.19.0.orig.tar.gz
--rw-r--r--  1 user users    138554 Aug 30 15:48 linux-tools-3.19.0-26-generic_3.19.0-26.28~14.04.1_amd64.deb
+    ~/kernel-assignment/linux-lts-vivid-3.19.0$ cd ..
+    ~/kernel-assignment$ ls -l
+    total 195148
+    -rw-r--r--  1 user users    138484 Aug 30 15:48 linux-cloud-tools-3.19.0-26-generic_3.19.0-26.28~14.04.1_amd64.deb
+    -rw-r--r--  1 user users   9448112 Aug 30 14:10 linux-headers-3.19.0-26_3.19.0-26.28~14.04.1_all.deb
+    -rw-r--r--  1 user users    864324 Aug 30 15:48 linux-headers-3.19.0-26-generic_3.19.0-26.28~14.04.1_amd64.deb
+    -rw-r--r--  1 user users  16831728 Aug 30 15:48 linux-image-3.19.0-26-generic_3.19.0-26.28~14.04.1_amd64.deb
+    -rw-r--r--  1 user users  38410732 Aug 30 15:48 linux-image-extra-3.19.0-26-generic_3.19.0-26.28~14.04.1_amd64.deb
+    drwxrwxr-x 27 user users      4096 Aug 30 15:47 linux-lts-vivid-3.19.0
+    -rw-rw-r--  1 user users  10858048 Aug 13 08:54 linux-lts-vivid_3.19.0-26.28~14.04.1.diff.gz
+    -rw-rw-r--  1 user users      7394 Aug 13 08:54 linux-lts-vivid_3.19.0-26.28~14.04.1.dsc
+    -rw-rw-r--  1 user users 123115155 May  6 18:35 linux-lts-vivid_3.19.0.orig.tar.gz
+    -rw-r--r--  1 user users    138554 Aug 30 15:48 linux-tools-3.19.0-26-generic_3.19.0-26.28~14.04.1_amd64.deb
 </pre>
 
 The .deb files contain the compiled kernel, which we can now install and run (after rebooting). To install the new kernel, we will use the following commands:
