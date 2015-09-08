@@ -180,7 +180,7 @@ We should then be able to cat or examine the contents of that file and it should
 <pre>
   ~$ ls -al /proc/num_pagefaults
   ls: /proc/num_pagefaults: No such file or directory
-  ~$ insmod ./pagefault.ko
+  ~$ sudo insmod ./pagefault.ko
   ~$ ls -al /proc/num_pagefaults
   -r--r--r--  1 root root 37 August 22 21:38 /proc/num_pagefaults
   ~$ cat /proc/num_pagefaults
@@ -189,7 +189,7 @@ We should then be able to cat or examine the contents of that file and it should
   658295
   ~$ cat /proc/num_pagefaults
   658485
-  ~$ rmmod page_fault_module
+  ~$ sudo rmmod page_fault_module
   ~$ ls -al /proc/num_pagefaults
   ls: /proc/num_pagefaults: No such file or directory
   ~$
