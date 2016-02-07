@@ -223,7 +223,7 @@ There are quite a few hints for this assignment:
 8. The /proc filesystem is not persistent storage in the same sense as an NTFS or ext3 filesystem, so don’t bother searching for file I/O tutorials. To quote a good reference on the proc system[7]:
 /proc is very special in that it is also a virtual filesystem. It’s sometimes referred to as a process information pseudo-file system. It doesn’t contain ’real’ files but runtime system information (e.g. system memory, devices mounted, hardware configuration, etc). For this reason it can be regarded as a control and information centre for the kernel.<br><br>Instead of performing standard file I/O, we need to register event handlers for various events. The seq_file API[9] introduced in Linux 3.10 is quite useful for this. [version.c](https://github.com/torvalds/linux/blob/master/fs/proc/version.c) is a simple example that can be readily adapted to complete the pagefault portion of the assignment.
 9. The only function you really need to get the pagefault stat is all_vm_events, which populates an array of longs with various statistical information[10]. You just need to invoke the function, then index to the correct array element in the result; in our case, PGFAULT is the index we need. Examples of all_vm_events usage are available in the Linux kernel source[11].
-You’ll need to *#include <linux/mm.h>* in your kernel module to access the all_vm_events function.
+You’ll need to *#include \<linux/mm.h\>* in your kernel module to access the all_vm_events function.
 10. seq_printf uses the same format specifiers as printf. The format specifier for an unsigned long is just a Google search away.
 
 ##Evaluation
