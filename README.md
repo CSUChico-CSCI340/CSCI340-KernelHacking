@@ -273,6 +273,6 @@ BuildYourOwnKernel. Online; accessed 21-August-2014.
 server. Online; accessed 21-August-2014.
 7. Linux Filesystem Hierarchy ”Chapter 1: Linux Filesystem Hierarchy - 1.14. /proc http://www. tldp.org/LDP/Linux-Filesystem-Hierarchy/html/proc.html Online; accessed 20- January-2015.
 8. Linux Loadable Kernel Module HOWTO “Introduction to Linux Loadable Kernel Modules”. http: //www.tldp.org/HOWTO/Module-HOWTO/x73.html. Online; accessed 21-August-2014.
-9. “Manage /proc file with seq file”. http://www.tldp.org/LDP/lkmpg/2.6/html/x861. html. Online; accessed 29-January-2015.
+9. “Manage /proc file with seq file”. http://www.tldp.org/LDP/lkmpg/2.6/html/x861.html. Online; accessed 29-January-2015.
 10. https://github.com/torvalds/linux/blob/master/mm/vmstat.c. Online; accessed 7-February-2016.
 11. https://github.com/torvalds/linux/blob/master/arch/s390/appldata/appldata_mem.c. Online; accessed 7-February-2016.
