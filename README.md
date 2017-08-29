@@ -1,26 +1,26 @@
-#Writing a Kernel Module
+# Writing a Kernel Module
 California State University - Chico
 
 By Bryan Dixon
 ***
 
-##Introduction
+## Introduction
 
 The purpose of this assignment is for you to become more familiar with how kernel modules are written and aspects of the Linux operating system using these modules.
 Logistics
 The only “hand-in” will be electronic. Any clarifications and revisions to the assignment will be modified here and announced to the class via Piazza.
 
-##Hand Out Instructions
+## Hand Out Instructions
 For this assignment you will want to use a virtual machine (VM); however, if you are running a native install of 64bit Ubuntu 16.04.1 LTS you should be able to do this without using a VM. I would recommend using a VM as we are going to be modifying privileged code and you could potentially corrupt your native system if you aren’t using a VM.
 There are no handout files for this assignment; however, on my webpage for this assignment there is a provided set of files for the hello world kernel module that you should build first to familiarize yourself with the basics of compiling & installing a compiled kernel module.
 
-##Kernel Modules
+## Kernel Modules
 There are two main ways to add code to the Linux kernel. One way is to choose or add code to compile into the kernel during the compilation process. The other method is to add the code to the Linux kernel while it is running, which is what a loadable kernel module is [8].
 
 For more information on Linux kernel modules, I highly recommend reading this extremely good introduc- tion to Linux Loadable Kernel Modules and how they are commonly used:
 [http://www.tldp.org/HOWTO/Module-HOWTO/x73.html](http://www.tldp.org/HOWTO/Module-HOWTO/x73.html)
 
-##Your Task
+## Your Task
 For this assignment you will be doing the following:
 
 1. Get the latest Linux kernel source for Ubuntu 16.04.1
@@ -31,7 +31,7 @@ For this assignment you will be doing the following:
 In this document we will walk through the steps to do items 1-3 above. The code for the Hello World kernel module can be found on my website along with this writeup. Details on item 4 are found later in this document.
 
 
-##Compile the Linux kernel from source
+## Compile the Linux kernel from source
 
 Your first step will be to download and install Ubuntu 16.04.1 64bit [6] onto your computer or VM (the Desktop and Server variants of Ubuntu will both work, but the Server variant is recommended because it requires less disk space). If you need help with this step please ask me to show you in lab or come to my office hours.
 Once Ubuntu is installed, you will need to set up the installation’s build environment by running the following commands in a terminal window:
@@ -107,7 +107,7 @@ The .deb files contain the compiled kernel, which we can now install and run (af
 
 After the computer reboots, we’ll be using the new kernel you compiled. You can now brag about your 1337 or leet status as a CS major and the fact you have compiled the Linux kernel from source.
 
-##Compile Hello World kernel module
+## Compile Hello World kernel module
 Now let’s get the Hello World kernel module source and Makefile files from my web server and work on compiling a Linux kernel module. You will need to download the helloworld.tar file from my website:
 
 [http://bryancdixon.com/site_media/Fall2014/CSCI340/helloworld.tar](http://bryancdixon.com/site_media/Fall2014/CSCI340/helloworld.tar)
@@ -165,7 +165,7 @@ You may see a warning in the dmesg output:
 
 This warning can be safely ignored.
 
-##Write your own kernel module
+## Write your own kernel module
 
 Now for the hard part: using the skills you’ve gained in this assignment so far, resources provided later in the hints section, and some details from lab you’ll now need to write your own Linux kernel module to provide us a system statistic in a /proc system file [1].
 
@@ -189,7 +189,7 @@ We should then be able to cat or examine the contents of that file and it should
   658295
   ~$ cat /proc/num_pagefaults
   658485
-  ~$ sudo rmmod page_fault_module
+  ~$ sudo rmmod pagefault 
   ~$ ls -al /proc/num_pagefaults
   ls: /proc/num_pagefaults: No such file or directory
   ~$
@@ -205,7 +205,7 @@ It’s worth thinking of this problem in a few steps:
 
 Good luck!
 
-##Hints
+## Hints
 There are quite a few hints for this assignment:
 
 1. When compiling the Linux kernel, make sure the virtual disk for the VM has plenty of space. The default disk size of 20 GB is probably sufficient.
@@ -226,7 +226,7 @@ There are quite a few hints for this assignment:
 You’ll need to *#include \<linux/mm.h\>* in your kernel module to access the all_vm_events function.
 10. seq_printf uses the same format specifiers as printf. The format specifier for an unsigned long is just a Google search away.
 
-##Evaluation
+## Evaluation
 You will be graded based on your success in completing various steps of this assignment. The scoring for this assignment is as follows:
 
 * 20% If you successfully compile a new kernel from source
@@ -234,7 +234,7 @@ You will be graded based on your success in completing various steps of this ass
 * 70% You also successfully write your own kernel module that creates the correct /proc file with a fixed value reported.
 * 100% You successfully get everything else working and your kernel module correctly writes the number of page faults to the /proc file requested.
 
-##Hand In Instructions
+## Hand In Instructions
 You will need to submit your assignment by committing your code, and compiled .deb and .ko files to the GitHub private repo you were invited to. Your repo must be part of the CSUChico-CSCI340 organization on GitHub; if this is not the case, you have put your files in the wrong repository. If you do not have a repository in this organization, make sure you filled out the GitHub request on my website for this semester.
 
 The files should be organized with the source files for your kernel module in a src/ folder in your repo, and the compiled dpkg (.deb) files and kernel object (.ko) files in the root directory.
@@ -261,7 +261,7 @@ Here is an example of a correctly structured repository:
 For ease of grading, you should name your .ko files as shown. All of the source code for your kernel module must be in the src/ folder as shown. You can name your source files any way you choose, but the compiled files must be named as shown.
 
 
-##References
+## References
 1. Steve Gribble CSE551 Spring 2007 - Programming Assignment #2 https://courses.cs. washington.edu/courses/cse551/07sp/programming/a2.html. Online; accessed 22- August-2014
 2. Allowing other users to run sudo https://help.ubuntu.com/community/RootSudo# Allowing_other_users_to_run_sudo. Online; accessed 19-January-2015.
 3. Gentoo Linux https://www.gentoo.org/. Online; accessed 21-August-2014.
