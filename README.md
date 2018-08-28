@@ -11,7 +11,7 @@ Logistics
 The only “hand-in” will be electronic. Any clarifications and revisions to the assignment will be modified here and announced to the class via Piazza.
 
 ## Hand Out Instructions
-For this assignment you will want to use a virtual machine (VM); however, if you are running a native install of 64bit Ubuntu 16.04.1 LTS you should be able to do this without using a VM. I would recommend using a VM as we are going to be modifying privileged code and you could potentially corrupt your native system if you aren’t using a VM.
+For this assignment you will want to use a virtual machine (VM); however, if you are running a native install of 64bit Ubuntu 18.04.1 LTS you should be able to do this without using a VM. I would recommend using a VM as we are going to be modifying privileged code and you could potentially corrupt your native system if you aren’t using a VM.
 There are no handout files for this assignment; however, on my webpage for this assignment there is a provided set of files for the hello world kernel module that you should build first to familiarize yourself with the basics of compiling & installing a compiled kernel module.
 
 ## Kernel Modules
@@ -23,8 +23,8 @@ For more information on Linux kernel modules, I highly recommend reading this ex
 ## Your Task
 For this assignment you will be doing the following:
 
-1. Get the latest Linux kernel source for Ubuntu 16.04.1
-2. Compile the latest Linux kernel source for Ubuntu 16.04.1
+1. Get the latest Linux kernel source for Ubuntu 18.04.1
+2. Compile the latest Linux kernel source for Ubuntu 18.04.1
 3. Compile a Hello World kernel module
 4. Write a kernel module to create and modify a /proc file
 
@@ -33,7 +33,7 @@ In this document we will walk through the steps to do items 1-3 above. The code 
 
 ## Compile the Linux kernel from source
 
-Your first step will be to download and install Ubuntu 16.04.1 64bit [6] onto your computer or VM (the Desktop and Server variants of Ubuntu will both work, but the Server variant is recommended because it requires less disk space). If you need help with this step please ask me to show you in lab or come to my office hours.
+Your first step will be to download and install Ubuntu 18.04.1 64bit [6] onto your computer or VM (the Desktop and Server variants of Ubuntu will both work, but the Server variant is recommended because it requires less disk space). If you need help with this step please ask me to show you in lab or come to my office hours.
 Once Ubuntu is installed, you will need to set up the installation’s build environment by running the following commands in a terminal window:
 
 <pre>
@@ -43,13 +43,13 @@ Once Ubuntu is installed, you will need to set up the installation’s build env
   $ sudo apt-get build-dep linux-image-$(uname -r)
 </pre>
 
-These commands update the package list to make sure we have the most up-to-date list of packages, install the latest versions of all installed software, install some general-purpose build tools, and finally install the build dependencies for the Linux kernel itself. You may want to upgrade the system upon install and then run these commands, and its possible you may need to correct your apt sources list (*/etc/apt/sources.list*) if you are using the server version of Ubuntu 16.04.1 as it might have the cdrom sources still enabled. It's also possible that the sources list does not include the source code options, so you'll likely need to uncomment the deb-src links in the sources file. In this way, we insure all the necessary tools to download, build, and install the new Linux kernel are available on the system.
+These commands update the package list to make sure we have the most up-to-date list of packages, install the latest versions of all installed software, install some general-purpose build tools, and finally install the build dependencies for the Linux kernel itself. You may want to upgrade the system upon install and then run these commands, and its possible you may need to correct your apt sources list (*/etc/apt/sources.list*) if you are using the server version of Ubuntu 18.04.1 as it might have the cdrom sources still enabled. It's also possible that the sources list does not include the source code options, so you'll likely need to uncomment the deb-src links in the sources file. In this way, we insure all the necessary tools to download, build, and install the new Linux kernel are available on the system.
 
 The sudo in the previous commands indicate we are invoking the given commands as the root user. sudo only works if your user account has sudoer privileges; if not, you will receive a message indicating the user is not in the sudoers file. This is usually not an issue in standard installation, but if you encounter this message, it is simple to give the current user permission to run commands with sudo [2].
 
 Once the build environment is set up, you will need to download the source code for the Linux kernel you are currently running (we aren’t trying to compile and install a newer kernel, just re-compile the current kernel). Downloading the source code for the Linux kernel is a simple process, and very common for people who are running user-built (instead of package-maintained) Linux distros. Gentoo Linux is an example of such a distro if you are interested [3].
 
-To get the source code for the currently running Linux kernel on Ubuntu 16.04.1, we will use apt-get, which will obtain the source for a specific binary package it provides:
+To get the source code for the currently running Linux kernel on Ubuntu 18.04.1, we will use apt-get, which will obtain the source for a specific binary package it provides:
 
 <pre>
    ~$ mkdir kernel-assignment
