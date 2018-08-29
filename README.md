@@ -75,7 +75,7 @@ If your version number varies this is likely due a newer kernel releasing since 
 <pre>
   $ cd linux-4.4.0/
   $ fakeroot debian/rules clean
-  $ fakeroot debian/rules binary-headers binary-generic
+  $ fakeroot debian/rules binary
 </pre>
 
 The first step above changes the working directory to be the root of the kernel source tree, which is the *linux-4.4.0* folder in this case. The build commands will take quite a while to run; on my fastest computer, it took an hour and half to build the .deb files. If you get errors during the compilation, please post about them in the class discussion board and see me in office hours or during lab so we can track down and fix the issue.
