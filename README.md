@@ -110,13 +110,13 @@ After the computer reboots, we’ll be using the new kernel you compiled. You ca
 ## Compile Hello World kernel module
 Now let’s get the Hello World kernel module source and Makefile files from my web server and work on compiling a Linux kernel module. You will need to download the helloworld.tar file from my website:
 
-[http://bryancdixon.com/site_media/Fall2014/CSCI340/helloworld.tar](http://bryancdixon.com/site_media/Fall2014/CSCI340/helloworld.tar)
+[https://www.bryancdixon.com/site_media/Fall2014/CSCI340/helloworld.tar](https://www.bryancdixon.com/site_media/Fall2014/CSCI340/helloworld.tar)
 
 You could download the file from the link above to your local computer, but I would recommend downloading it directly to your Ubuntu VM so you can make use of it with having to worry about copying the files onto the VM. To do this you can use the wget command with that URL as the argument to the command and it’ll download the helloworld.tar file to your current working directory.
 Once you have the tar file you will want to extract it:
 
 <pre>
-  ~$ wget http://bryancdixon.com/site_media/Fall2014/CSCI340/helloworld.tar
+  ~$ wget https://www.bryancdixon.com/site_media/Fall2014/CSCI340/helloworld.tar
   ~$ tar xvf helloworld.tar
   x helloworld/
   x helloworld/hello.c
