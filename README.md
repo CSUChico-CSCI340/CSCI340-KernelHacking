@@ -176,26 +176,26 @@ Now for the hard part: using the skills you’ve gained in this assignment so fa
 When we insert your module for grading it should create a new entry in the /proc filesystem called:
 
 <pre>
-  /proc/num_pagefaults
+  /proc/numpagefaults
 </pre>
 
 We should then be able to cat or examine the contents of that file and it should provide us the number of page faults that the operating system has handled since it booted. As an example:
 
 <pre>
-  ~$ ls -al /proc/num_pagefaults
-  ls: /proc/num_pagefaults: No such file or directory
-  ~$ sudo insmod ./pagefault.ko
-  ~$ ls -al /proc/num_pagefaults
-  -r--r--r--  1 root root 37 August 22 21:38 /proc/num_pagefaults
-  ~$ cat /proc/num_pagefaults
+  ~$ ls -al /proc/numpagefaults
+  ls: /proc/numpagefaults: No such file or directory
+  ~$ sudo insmod ./numpagefaults.ko
+  ~$ ls -al /proc/numpagefaults
+  -r--r--r--  1 root root 37 August 22 21:38 /proc/numpagefaults
+  ~$ cat /proc/numpagefaults
   658103
-  ~$ cat /proc/num_pagefaults
+  ~$ cat /proc/numpagefaults
   658295
-  ~$ cat /proc/num_pagefaults
+  ~$ cat /proc/numpagefaults
   658485
-  ~$ sudo rmmod pagefault 
-  ~$ ls -al /proc/num_pagefaults
-  ls: /proc/num_pagefaults: No such file or directory
+  ~$ sudo rmmod numpagefaults 
+  ~$ ls -al /proc/numpagefaults
+  ls: /proc/numpagefaults: No such file or directory
   ~$
 </pre>
 
@@ -203,9 +203,9 @@ It’s worth thinking of this problem in a few steps:
 
 1. Read about how the /proc filesystem works
 2. Figure out how you write information to a /proc file
-3. Write a kernel module that successfully prints a fixed string when one cat’s the /proc/num pagefaults file.
+3. Write a kernel module that successfully prints a fixed string when one cat’s the /proc/numpagefaults file.
 4. Locate the kernel code that generates page faults statistics
-5. Write a kernel module that prints that statistic every time someone cat’s the /proc/num pagefaults file.
+5. Write a kernel module that prints that statistic every time someone cat’s the /proc/numpagefaults file.
 
 Good luck!
 
