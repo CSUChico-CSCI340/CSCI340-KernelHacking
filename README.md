@@ -60,13 +60,13 @@ To get the source code for the currently running Linux kernel on Ubuntu 18.04.1,
    ~$ cd kernel-assignment
    ~/kernel-assignment$ apt-get source linux-image-$(uname -r)
     Reading package lists... Done
-    Picking 'linux-signed' as source package instead of 'linux-image-4.15.0-33-generic'
-    Need to get 17.7 kB of source archives.
-    Get:1 http://archive.ubuntu.com/ubuntu bionic-updates/main linux-signed 4.15.0-33.36 (dsc) [1,775 B]
-    Get:2 http://archive.ubuntu.com/ubuntu bionic-updates/main linux-signed 4.15.0-33.36 (tar) [15.9 kB]
-    Fetched 17.7 kB in 1s (28.2 kB/s)       
+    Picking 'linux-signed' as source package instead of 'linux-image-4.15.0-43-generic'
+    Need to get 17.8 kB of source archives.
+    Get:1 http://archive.ubuntu.com/ubuntu bionic-updates/main linux-signed 4.15.0-43.46 (dsc) [1,775 B]
+    Get:2 http://archive.ubuntu.com/ubuntu bionic-updates/main linux-signed 4.15.0-43.46 (tar) [16.1 kB]
+    Fetched 17.8 kB in 6s (3,053 B/s)  
     dpkg-source: info: extracting linux-signed in linux-signed-4.15.0
-    dpkg-source: info: unpacking linux-signed_4.15.0-33.36.tar.xz
+    dpkg-source: info: unpacking linux-signed_4.15.0-43.46.tar.xz
    ~/kernel-assignment$ 
 </pre>
 
