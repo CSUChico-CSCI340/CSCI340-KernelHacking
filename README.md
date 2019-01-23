@@ -77,9 +77,9 @@ The apt-get command will take a few minutes to download the Linux source code. W
 <pre>
     ~/kernel-assignment$ ls -l
     total 24
-    drwxrwxr-x 3 bryan bryan  4096 Aug 15 12:57 linux-signed-4.15.0
-    -rw-r--r-- 1 bryan bryan  1775 Aug 16 20:13 linux-signed_4.15.0-33.36.dsc
-    -rw-r--r-- 1 bryan bryan 15920 Aug 16 20:13 linux-signed_4.15.0-33.36.tar.xz
+    drwxrwxr-x 3 bryan bryan  4096 Dec  6 13:56 linux-signed-4.15.0
+    -rw-r--r-- 1 bryan bryan  1775 Dec  7 07:48 linux-signed_4.15.0-43.46.dsc
+    -rw-r--r-- 1 bryan bryan 16056 Dec  7 07:48 linux-signed_4.15.0-43.46.tar.xz
 </pre>
 
 If your version number varies this is likely due a newer kernel releasing since this readme was written, this is fine. We are not going to modify the kernel’s configuration, so we can now move to building the new kernel. Ubuntu does this a bit differently than other kernels I’ve built, which usually have a make directive to make the configuration, which can be the default or modified by you, and a second make directive to build the kernel. In this case, we will build the kernel using the following commands:
@@ -96,15 +96,15 @@ When the build process is complete (hopefully without any errors), there will be
 <pre>
     ~/kernel-assignment/linux-signed-4.15.0$ cd ..
     ~/kernel-assignment$ ls -l
-    total 23228
-    -rw-r--r-- 1 bryan bryan 7883864 Sep  3 19:44 kernel-signed-image-4.15.0-33-generic-di_4.15.0-33.36_amd64.udeb
-    -rw-r--r-- 1 bryan bryan 7896228 Sep  3 19:44 linux-image-4.15.0-33-generic_4.15.0-33.36_amd64.deb
-    -rw-r--r-- 1 bryan bryan   12572 Sep  3 19:44 linux-image-4.15.0-33-generic-dbgsym_4.15.0-33.36_amd64.ddeb
-    -rw-r--r-- 1 bryan bryan 7946096 Sep  3 19:44 linux-image-4.15.0-33-lowlatency_4.15.0-33.36_amd64.deb
-    -rw-r--r-- 1 bryan bryan   12576 Sep  3 19:44 linux-image-4.15.0-33-lowlatency-dbgsym_4.15.0-33.36_amd64.ddeb
-    drwxrwxr-x 5 bryan bryan    4096 Sep  3 19:43 linux-signed-4.15.0
-    -rw-r--r-- 1 bryan bryan    1775 Aug 16 20:13 linux-signed_4.15.0-33.36.dsc
-    -rw-r--r-- 1 bryan bryan   15920 Aug 16 20:13 linux-signed_4.15.0-33.36.tar.xz
+    total 23276
+    -rw-r--r-- 1 bryan bryan 7897648 Jan 23 16:56 kernel-signed-image-4.15.0-43-generic-di_4.15.0-43.46_amd64.udeb
+    -rw-r--r-- 1 bryan bryan 7910540 Jan 23 16:56 linux-image-4.15.0-43-generic_4.15.0-43.46_amd64.deb
+    -rw-r--r-- 1 bryan bryan   12780 Jan 23 16:56 linux-image-4.15.0-43-generic-dbgsym_4.15.0-43.46_amd64.ddeb
+    -rw-r--r-- 1 bryan bryan 7960520 Jan 23 16:56 linux-image-4.15.0-43-lowlatency_4.15.0-43.46_amd64.deb
+    -rw-r--r-- 1 bryan bryan   12788 Jan 23 16:56 linux-image-4.15.0-43-lowlatency-dbgsym_4.15.0-43.46_amd64.ddeb
+    drwxrwxr-x 5 bryan bryan    4096 Jan 23 16:56 linux-signed-4.15.0
+    -rw-r--r-- 1 bryan bryan    1775 Dec  7 07:48 linux-signed_4.15.0-43.46.dsc
+    -rw-r--r-- 1 bryan bryan   16056 Dec  7 07:48 linux-signed_4.15.0-43.46.tar.xz
 </pre>
 
 The *.deb* files contain the compiled kernel, which you should now include in your repos. You do not need to install it for the rest of the assignment to work, and to keep your VM system working more consistently I would not recommend installing it. 
