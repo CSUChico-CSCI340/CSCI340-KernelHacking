@@ -40,11 +40,11 @@ Once Ubuntu is installed, its possible you may need to correct your apt sources 
 Next, You will need to set up the installation’s build environment by running the following commands in a terminal window (make sure your *sources.list* is updated before doing these steps):
 
 ```bash
-  $ sudo apt-get update
-  $ sudo apt-get upgrade 
-  $ sudo apt-get dist-upgrade
-  $ sudo apt-get install build-essential
-  $ sudo apt-get build-dep linux-image-$(uname -r)
+$ sudo apt-get update
+$ sudo apt-get upgrade 
+$ sudo apt-get dist-upgrade
+$ sudo apt-get install build-essential
+$ sudo apt-get build-dep linux-image-$(uname -r)
 ```
 
 These commands update the package list to make sure we have the most up-to-date list of packages, install the latest versions of all installed software, install some general-purpose build tools, and finally install the build dependencies for the Linux kernel itself. It is likely the build-dep will install the *linux-signed* instead of generic build dependencies; however, that is fine. 
@@ -56,18 +56,18 @@ Once the build environment is set up, you will need to download the source code 
 To get the source code for the currently running Linux kernel on Ubuntu 18.04.1, we will use apt-get, which will obtain the source for a specific binary package it provides:
 
 ```bash
-   ~$ mkdir kernel-assignment
-   ~$ cd kernel-assignment
-   ~/kernel-assignment$ apt-get source linux-image-$(uname -r)
-    Reading package lists... Done
-    Picking 'linux-signed' as source package instead of 'linux-image-4.15.0-43-generic'
-    Need to get 17.8 kB of source archives.
-    Get:1 http://archive.ubuntu.com/ubuntu bionic-updates/main linux-signed 4.15.0-43.46 (dsc) [1,775 B]
-    Get:2 http://archive.ubuntu.com/ubuntu bionic-updates/main linux-signed 4.15.0-43.46 (tar) [16.1 kB]
-    Fetched 17.8 kB in 6s (3,053 B/s)  
-    dpkg-source: info: extracting linux-signed in linux-signed-4.15.0
-    dpkg-source: info: unpacking linux-signed_4.15.0-43.46.tar.xz
-   ~/kernel-assignment$ 
+~$ mkdir kernel-assignment
+~$ cd kernel-assignment
+~/kernel-assignment$ apt-get source linux-image-$(uname -r)
+Reading package lists... Done
+Picking 'linux-signed' as source package instead of 'linux-image-4.15.0-43-generic'
+Need to get 17.8 kB of source archives.
+Get:1 http://archive.ubuntu.com/ubuntu bionic-updates/main linux-signed 4.15.0-43.46 (dsc) [1,775 B]
+Get:2 http://archive.ubuntu.com/ubuntu bionic-updates/main linux-signed 4.15.0-43.46 (tar) [16.1 kB]
+Fetched 17.8 kB in 6s (3,053 B/s)  
+dpkg-source: info: extracting linux-signed in linux-signed-4.15.0
+dpkg-source: info: unpacking linux-signed_4.15.0-43.46.tar.xz
+~/kernel-assignment$ 
 ```
 
 It is also common practice to obtain the Linux kernel source by checking out the current kernel source from the source tree on the official Linux git repository, but this assignment was tested with the apt-get approach so that’s what I’m giving for the instructions. It is also likely you'll get the linux-signed vs generic source, which is fine. The references contain a link to an Ubuntu wiki article about building your own kernel that has the git commands if you want to know what they are [5].
@@ -75,36 +75,36 @@ It is also common practice to obtain the Linux kernel source by checking out the
 The apt-get command will take a few minutes to download the Linux source code. When the download process finishes, you should have some additional files and a source code folder in the current working directory:
 
 ```bash
-    ~/kernel-assignment$ ls -l
-    total 24
-    drwxrwxr-x 3 bryan bryan  4096 Dec  6 13:56 linux-signed-4.15.0
-    -rw-r--r-- 1 bryan bryan  1775 Dec  7 07:48 linux-signed_4.15.0-43.46.dsc
-    -rw-r--r-- 1 bryan bryan 16056 Dec  7 07:48 linux-signed_4.15.0-43.46.tar.xz
+~/kernel-assignment$ ls -l
+total 24
+drwxrwxr-x 3 bryan bryan  4096 Dec  6 13:56 linux-signed-4.15.0
+-rw-r--r-- 1 bryan bryan  1775 Dec  7 07:48 linux-signed_4.15.0-43.46.dsc
+-rw-r--r-- 1 bryan bryan 16056 Dec  7 07:48 linux-signed_4.15.0-43.46.tar.xz
 ```
 
 If your version number varies this is likely due a newer kernel releasing since this readme was written, this is fine. We are not going to modify the kernel’s configuration, so we can now move to building the new kernel. Ubuntu does this a bit differently than other kernels I’ve built, which usually have a make directive to make the configuration, which can be the default or modified by you, and a second make directive to build the kernel. In this case, we will build the kernel using the following commands:
 
 ```bash
-  ~/kernel-assignment/$ cd linux-signed-4.15.0/
-  ~/kernel-assignment/linux-signed-4.15.0$ fakeroot debian/rules clean
-  ~/kernel-assignment/linux-signed-4.15.0$ fakeroot debian/rules binary
+~/kernel-assignment/$ cd linux-signed-4.15.0/
+~/kernel-assignment/linux-signed-4.15.0$ fakeroot debian/rules clean
+~/kernel-assignment/linux-signed-4.15.0$ fakeroot debian/rules binary
 ```
 
 The first step above changes the working directory to be the root of the kernel source tree, which is the *linux-4.4.0* folder in this case. The build commands will take quite a while to run; on my fastest computer, it took an hour and half to build the .deb files. If you get errors during the compilation, please post about them in the class discussion board and see me in office hours or during lab so we can track down and fix the issue.
 When the build process is complete (hopefully without any errors), there will be numerous .deb files in the parent directory of the kernel source tree (this parent directory will be the kernel-assignement directory we created when downloading the kernel source code):
 
 ```bash
-    ~/kernel-assignment/linux-signed-4.15.0$ cd ..
-    ~/kernel-assignment$ ls -l
-    total 23276
-    -rw-r--r-- 1 bryan bryan 7897648 Jan 23 16:56 kernel-signed-image-4.15.0-43-generic-di_4.15.0-43.46_amd64.udeb
-    -rw-r--r-- 1 bryan bryan 7910540 Jan 23 16:56 linux-image-4.15.0-43-generic_4.15.0-43.46_amd64.deb
-    -rw-r--r-- 1 bryan bryan   12780 Jan 23 16:56 linux-image-4.15.0-43-generic-dbgsym_4.15.0-43.46_amd64.ddeb
-    -rw-r--r-- 1 bryan bryan 7960520 Jan 23 16:56 linux-image-4.15.0-43-lowlatency_4.15.0-43.46_amd64.deb
-    -rw-r--r-- 1 bryan bryan   12788 Jan 23 16:56 linux-image-4.15.0-43-lowlatency-dbgsym_4.15.0-43.46_amd64.ddeb
-    drwxrwxr-x 5 bryan bryan    4096 Jan 23 16:56 linux-signed-4.15.0
-    -rw-r--r-- 1 bryan bryan    1775 Dec  7 07:48 linux-signed_4.15.0-43.46.dsc
-    -rw-r--r-- 1 bryan bryan   16056 Dec  7 07:48 linux-signed_4.15.0-43.46.tar.xz
+~/kernel-assignment/linux-signed-4.15.0$ cd ..
+~/kernel-assignment$ ls -l
+total 23276
+-rw-r--r-- 1 bryan bryan 7897648 Jan 23 16:56 kernel-signed-image-4.15.0-43-generic-di_4.15.0-43.46_amd64.udeb
+-rw-r--r-- 1 bryan bryan 7910540 Jan 23 16:56 linux-image-4.15.0-43-generic_4.15.0-43.46_amd64.deb
+-rw-r--r-- 1 bryan bryan   12780 Jan 23 16:56 linux-image-4.15.0-43-generic-dbgsym_4.15.0-43.46_amd64.ddeb
+-rw-r--r-- 1 bryan bryan 7960520 Jan 23 16:56 linux-image-4.15.0-43-lowlatency_4.15.0-43.46_amd64.deb
+-rw-r--r-- 1 bryan bryan   12788 Jan 23 16:56 linux-image-4.15.0-43-lowlatency-dbgsym_4.15.0-43.46_amd64.ddeb
+drwxrwxr-x 5 bryan bryan    4096 Jan 23 16:56 linux-signed-4.15.0
+-rw-r--r-- 1 bryan bryan    1775 Dec  7 07:48 linux-signed_4.15.0-43.46.dsc
+-rw-r--r-- 1 bryan bryan   16056 Dec  7 07:48 linux-signed_4.15.0-43.46.tar.xz
 ```
 
 The *.deb* files contain the compiled kernel, which you should now include in your repos. You do not need to install it for the rest of the assignment to work, and to keep your VM system working more consistently I would not recommend installing it. 
@@ -120,11 +120,11 @@ You could download the file from the link above to your local computer, but I wo
 Once you have the tar file you will want to extract it:
 
 ```bash
-  ~$ wget https://www.bryancdixon.com/site_media/Fall2014/CSCI340/helloworld.tar
-  ~$ tar xvf helloworld.tar
-  x helloworld/
-  x helloworld/hello.c
-  x helloworld/Makefile
+~$ wget https://www.bryancdixon.com/site_media/Fall2014/CSCI340/helloworld.tar
+~$ tar xvf helloworld.tar
+x helloworld/
+x helloworld/hello.c
+x helloworld/Makefile
 ```
 
 You should now have a helloworld folder in your current working directory. At this point you’ll want to likely take a look at the helloworld.c source file and the Makefile to familiarize yourself with the workings of these two files. These two files are also a good starting point for the final part of this assignment.
@@ -132,39 +132,39 @@ You should now have a helloworld folder in your current working directory. At th
 To build the Hello World kernel module you will need to change your working directory to be in the helloworld folder. Building kernel module is as simple as just typing make:
 
 ```bash
-  $ cd helloworld
-  $ make
+$ cd helloworld
+$ make
 ```
 
 This will build numerous files:
 
 ```bash
 ~/helloworld$ ls
-  hello.c  hello.ko  hello.mod.c  hello.mod.o  hello.o
-  Makefile  modules.order  Module.symvers
+hello.c  hello.ko  hello.mod.c  hello.mod.o  hello.o
+Makefile  modules.order  Module.symvers
 ```
 
 The only generated file that we care about is the hello.ko file, which is a kernel object file. We can now install the generated helloworld kernel module by using the insmod command:
 
 ```bash
-  ~/helloworld$ sudo insmod hello.ko
-  ~/helloworld$ sudo rmmod hello
-  ~/helloworld$ dmesg | tail
-  ...
-  [ 6814.354580] Hello world!
-  [ 6819.571911] Cleaning up module.
+~/helloworld$ sudo insmod hello.ko
+~/helloworld$ sudo rmmod hello
+~/helloworld$ dmesg | tail
+...
+[ 6814.354580] Hello world!
+[ 6819.571911] Cleaning up module.
 ```
 
 In the above example, I inserted the Hello World kernel module with the insmod command, immediately removed it with the rmmod command, and finally inspected the dmesg output to find the printk statements that printed ”Hello World!” when the module was installed and the cleanup message when the module was removed. In the above output, this process completed successfully.
 You may see a warning in the dmesg output:
 
 ```bash
-  ~$ dmesg | tail
-  ...
-  [  258.556284] hello: module verification failed: signature and/or
-  required key missing - tainting kernel
-  [  258.558168] Hello world!
-  [  265.987671] Cleaning up module.
+~$ dmesg | tail
+...
+[  258.556284] hello: module verification failed: signature and/or
+required key missing - tainting kernel
+[  258.558168] Hello world!
+[  265.987671] Cleaning up module.
 ```
 
 This warning can be safely ignored.
@@ -176,27 +176,27 @@ Now for the hard part: using the skills you’ve gained in this assignment so fa
 When we insert your module for grading it should create a new entry in the /proc filesystem called:
 
 ```bash
-  /proc/numpagefaults
+/proc/numpagefaults
 ```
 
 We should then be able to cat or examine the contents of that file and it should provide us the number of page faults that the operating system has handled since it booted. As an example:
 
 ```bash
-  ~$ ls -al /proc/numpagefaults
-  ls: /proc/numpagefaults: No such file or directory
-  ~$ sudo insmod ./numpagefaults.ko
-  ~$ ls -al /proc/numpagefaults
-  -r--r--r--  1 root root 37 August 22 21:38 /proc/numpagefaults
-  ~$ cat /proc/numpagefaults
-  658103
-  ~$ cat /proc/numpagefaults
-  658295
-  ~$ cat /proc/numpagefaults
-  658485
-  ~$ sudo rmmod numpagefaults 
-  ~$ ls -al /proc/numpagefaults
-  ls: /proc/numpagefaults: No such file or directory
-  ~$
+~$ ls -al /proc/numpagefaults
+ls: /proc/numpagefaults: No such file or directory
+~$ sudo insmod ./numpagefaults.ko
+~$ ls -al /proc/numpagefaults
+-r--r--r--  1 root root 37 August 22 21:38 /proc/numpagefaults
+~$ cat /proc/numpagefaults
+658103
+~$ cat /proc/numpagefaults
+658295
+~$ cat /proc/numpagefaults
+658485
+~$ sudo rmmod numpagefaults 
+~$ ls -al /proc/numpagefaults
+ls: /proc/numpagefaults: No such file or directory
+~$
 ```
 
 It’s worth thinking of this problem in a few steps:
@@ -223,8 +223,8 @@ MODULE_LICENSE("GPL");
 ```
 7. The Linux kernel already includes the page fault statistic in a /proc file, along with numerous other statistics. It is useful to see how this is already done and see if you can modify it to make a new /proc file that contains the current number of page faults only. The following command provides a good reference for the comparing the kernel statistics with those of your kernel module:
 ```bash
-     ̃$ cat /proc/vmstat | grep pgfault
-    pgfault 2301445
+ ̃$ cat /proc/vmstat | grep pgfault
+pgfault 2301445
 ```
 8. The /proc filesystem is not persistent storage in the same sense as an NTFS or ext3 filesystem, so don’t bother searching for file I/O tutorials. To quote a good reference on the proc system[7]:
 /proc is very special in that it is also a virtual filesystem. It’s sometimes referred to as a process information pseudo-file system. It doesn’t contain ’real’ files but runtime system information (e.g. system memory, devices mounted, hardware configuration, etc). For this reason it can be regarded as a control and information centre for the kernel.<br><br>Instead of performing standard file I/O, we need to register event handlers for various events. The seq_file API[9] introduced in Linux 3.10 is quite useful for this. [version.c](https://github.com/torvalds/linux/blob/master/fs/proc/version.c) is a simple example that can be readily adapted to complete the pagefault portion of the assignment.
@@ -247,21 +247,21 @@ The files should be organized with the source files for your kernel module in a 
 Here is an example of a correctly structured repository:
 
 ```bash
-  /
-  ....src/
-  ........numpagefaults.c
-  ........Makefile
-  ....helloworld/
-  ........hello.c
-  ........Makefile
-  ....hello.ko
-  ....linux-cloud-tools-3.13.0-xxx.deb
-  ....linux-headers-3.13.0-xxx.deb
-  ....linux-headers-3.13.0-xxx.deb
-  ....linux-image-3.13.0-xxx.deb
-  ....linux-image-extra-3.13.0-xxx.deb
-  ....linux-tools-3.13.0-44-xxx.deb
-  ....numpagefaults.ko
+/
+....src/
+........numpagefaults.c
+........Makefile
+....helloworld/
+........hello.c
+........Makefile
+....hello.ko
+....linux-cloud-tools-3.13.0-xxx.deb
+....linux-headers-3.13.0-xxx.deb
+....linux-headers-3.13.0-xxx.deb
+....linux-image-3.13.0-xxx.deb
+....linux-image-extra-3.13.0-xxx.deb
+....linux-tools-3.13.0-44-xxx.deb
+....numpagefaults.ko
 ```
 
 For ease of grading, you should name your .ko files as shown. All of the source code for your kernel module must be in the src/ folder as shown. You can name your source files any way you choose, but the compiled files must be named as shown.
