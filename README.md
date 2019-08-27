@@ -114,7 +114,7 @@ You can now brag about your 1337 or leet status as a CS major and the fact you h
 ## Compile Hello World kernel module
 Now let’s get the Hello World kernel module source and Makefile files from my web server and work on compiling a Linux kernel module. You will need to download the helloworld.tar file from my website:
 
-[https://www.bryancdixon.com/site_media/Fall2014/CSCI340/helloworld.tar](https://www.bryancdixon.com/site_media/Fall2014/CSCI340/helloworld.tar)
+[https://www.bryancdixon.com/media/helloworld.tar](https://www.bryancdixon.com/media/helloworld.tar)
 
 You could download the file from the link above to your local computer, but I would recommend downloading it directly to your Ubuntu VM so you can make use of it with having to worry about copying the files onto the VM. To do this you can use the wget command with that URL as the argument to the command and it’ll download the helloworld.tar file to your current working directory.
 Once you have the tar file you will want to extract it:
