@@ -11,7 +11,7 @@ Logistics
 The only “hand-in” will be electronic. Any clarifications and revisions to the assignment will be modified here and announced to the class via Piazza.
 
 ## Hand Out Instructions
-For this assignment you will want to use a virtual machine (VM); however, if you are running a native install of 64bit Ubuntu 18.04.1 LTS you should be able to do this without using a VM. I would recommend using a VM as we are going to be modifying privileged code and you could potentially corrupt your native system if you aren’t using a VM.
+For this assignment you will want to use a virtual machine (VM); however, if you are running a native install of 64bit Ubuntu 20.04 LTS you should be able to do this without using a VM. I would recommend using a VM as we are going to be modifying privileged code and you could potentially corrupt your native system if you aren’t using a VM.
 There are no handout files for this assignment; however, on my webpage for this assignment there is a provided set of files for the hello world kernel module that you should build first to familiarize yourself with the basics of compiling & installing a compiled kernel module.
 
 ## Kernel Modules
@@ -23,8 +23,8 @@ For more information on Linux kernel modules, I highly recommend reading this ex
 ## Your Task
 For this assignment you will be doing the following:
 
-1. Get the latest Linux kernel source for Ubuntu 18.04.1
-2. Compile the latest Linux kernel source for Ubuntu 18.04.1
+1. Get the latest Linux kernel source for Ubuntu 20.04
+2. Compile the latest Linux kernel source for Ubuntu 20.04
 3. Compile a Hello World kernel module
 4. Write a kernel module to create and modify a /proc file
 
@@ -33,9 +33,9 @@ In this document we will walk through the steps to do items 1-3 above. The code 
 
 ## Compile the Linux kernel from source
 
-Your first step will be to download and install Ubuntu 18.04.1 64bit [6] onto your computer or VM (the Desktop and Server variants of Ubuntu will both work, but the Server variant is recommended because it requires less disk space). If you need help with this step please ask me to show you in lab or come to my office hours. 
+Your first step will be to download and install Ubuntu 20.04 64bit [6] onto your computer or VM (the Desktop and Server variants of Ubuntu will both work, but the Server variant is recommended because it requires less disk space). If you need help with this step please ask me to show you in lab or come to my office hours. 
 
-Once Ubuntu is installed, its possible you may need to correct your apt sources list (*/etc/apt/sources.list*) if you are using the server version of Ubuntu 18.04.1 as it might have the cdrom sources still enabled. It's also possible that the sources list does not include the source code options, so you'll likely need to uncomment the *deb-src* links in the sources file. If your *sources.list* file only has a few lines you might need a more complete sources.list file like the one [here](https://gist.github.com/javawolfpack/9af9520c8e09930315a5dd45088547d4). In this way, we insure all the necessary tools to download, build, and install the new Linux kernel are available on the system. 
+Once Ubuntu is installed, its possible you may need to correct your apt sources list (*/etc/apt/sources.list*) if you are using the server version of Ubuntu 20.04 as it might have the cdrom sources still enabled. It's also possible that the sources list does not include the source code options, so you'll likely need to uncomment the *deb-src* links in the sources file. If your *sources.list* file only has a few lines you might need a more complete sources.list file like the one [here](https://gist.github.com/javawolfpack/9af9520c8e09930315a5dd45088547d4). In this way, we insure all the necessary tools to download, build, and install the new Linux kernel are available on the system. 
 
 Next, You will need to set up the installation’s build environment by running the following commands in a terminal window (make sure your *sources.list* is updated before doing these steps):
 
@@ -43,7 +43,7 @@ Next, You will need to set up the installation’s build environment by running 
 $ sudo apt-get update
 $ sudo apt-get upgrade 
 $ sudo apt-get dist-upgrade
-$ sudo apt-get install build-essential
+$ sudo apt-get install build-essential debhelper
 $ sudo apt-get build-dep linux-image-$(uname -r)
 ```
 
@@ -53,20 +53,20 @@ The sudo in the previous commands indicate we are invoking the given commands as
 
 Once the build environment is set up, you will need to download the source code for the Linux kernel you are currently running (we aren’t trying to compile and install a newer kernel, just re-compile the current kernel). Downloading the source code for the Linux kernel is a simple process, and very common for people who are running user-built (instead of package-maintained) Linux distros. Gentoo Linux is an example of such a distro if you are interested [3].
 
-To get the source code for the currently running Linux kernel on Ubuntu 18.04.1, we will use apt-get, which will obtain the source for a specific binary package it provides:
+To get the source code for the currently running Linux kernel on Ubuntu 20.04, we will use apt-get, which will obtain the source for a specific binary package it provides:
 
 ```bash
 ~$ mkdir kernel-assignment
 ~$ cd kernel-assignment
 ~/kernel-assignment$ apt-get source linux-image-$(uname -r)
 Reading package lists... Done
-Picking 'linux-signed' as source package instead of 'linux-image-4.15.0-43-generic'
-Need to get 17.8 kB of source archives.
-Get:1 http://archive.ubuntu.com/ubuntu bionic-updates/main linux-signed 4.15.0-43.46 (dsc) [1,775 B]
-Get:2 http://archive.ubuntu.com/ubuntu bionic-updates/main linux-signed 4.15.0-43.46 (tar) [16.1 kB]
-Fetched 17.8 kB in 6s (3,053 B/s)  
-dpkg-source: info: extracting linux-signed in linux-signed-4.15.0
-dpkg-source: info: unpacking linux-signed_4.15.0-43.46.tar.xz
+Picking 'linux-signed' as source package instead of 'linux-image-5.4.0-31-generic'
+Need to get 20.5 kB of source archives.
+Get:1 http://us.archive.ubuntu.com/ubuntu focal-updates/main linux-signed 5.4.0-31.35 (dsc) [2,179 B]
+Get:2 http://us.archive.ubuntu.com/ubuntu focal-updates/main linux-signed 5.4.0-31.35 (tar) [18.3 kB]
+Fetched 20.5 kB in 0s (42.6 kB/s)
+dpkg-source: info: extracting linux-signed in linux-signed-5.4.0
+dpkg-source: info: unpacking linux-signed_5.4.0-31.35.tar.xz
 ~/kernel-assignment$ 
 ```
 
@@ -76,35 +76,35 @@ The apt-get command will take a few minutes to download the Linux source code. W
 
 ```bash
 ~/kernel-assignment$ ls -l
-total 24
-drwxrwxr-x 3 bryan bryan  4096 Dec  6 13:56 linux-signed-4.15.0
--rw-r--r-- 1 bryan bryan  1775 Dec  7 07:48 linux-signed_4.15.0-43.46.dsc
--rw-r--r-- 1 bryan bryan 16056 Dec  7 07:48 linux-signed_4.15.0-43.46.tar.xz
+total 28
+drwxrwxr-x 3 bryan bryan  4096 May  7 08:59 linux-signed-5.4.0
+-rw-r--r-- 1 bryan bryan  2179 May  8 10:58 linux-signed_5.4.0-31.35.dsc
+-rw-r--r-- 1 bryan bryan 18284 May  8 10:58 linux-signed_5.4.0-31.35.tar.xz
 ```
 
 If your version number varies this is likely due a newer kernel releasing since this readme was written, this is fine. We are not going to modify the kernel’s configuration, so we can now move to building the new kernel. Ubuntu does this a bit differently than other kernels I’ve built, which usually have a make directive to make the configuration, which can be the default or modified by you, and a second make directive to build the kernel. In this case, we will build the kernel using the following commands:
 
 ```bash
-~/kernel-assignment/$ cd linux-signed-4.15.0/
-~/kernel-assignment/linux-signed-4.15.0$ fakeroot debian/rules clean
-~/kernel-assignment/linux-signed-4.15.0$ fakeroot debian/rules binary
+~/kernel-assignment/$ cd linux-signed-5.4.0/
+~/kernel-assignment/linux-signed-5.4.0$ fakeroot debian/rules clean
+~/kernel-assignment/linux-signed-5.4.0$ fakeroot debian/rules binary
 ```
 
-The first step above changes the working directory to be the root of the kernel source tree, which is the *linux-4.4.0* folder in this case. The build commands will take quite a while to run; on my fastest computer, it took an hour and half to build the .deb files. If you get errors during the compilation, please post about them in the class discussion board and see me in office hours or during lab so we can track down and fix the issue.
+The first step above changes the working directory to be the root of the kernel source tree, which is the *linux-5.4.0* folder in this case. The build commands will take quite a while to run; on my fastest computer, it took an hour and half to build the .deb files. If you get errors during the compilation, please post about them in the class discussion board and see me in office hours or during lab so we can track down and fix the issue.
 When the build process is complete (hopefully without any errors), there will be numerous .deb files in the parent directory of the kernel source tree (this parent directory will be the kernel-assignement directory we created when downloading the kernel source code):
 
 ```bash
-~/kernel-assignment/linux-signed-4.15.0$ cd ..
+~/kernel-assignment/linux-signed-5.4.0$ cd ..
 ~/kernel-assignment$ ls -l
-total 23276
--rw-r--r-- 1 bryan bryan 7897648 Jan 23 16:56 kernel-signed-image-4.15.0-43-generic-di_4.15.0-43.46_amd64.udeb
--rw-r--r-- 1 bryan bryan 7910540 Jan 23 16:56 linux-image-4.15.0-43-generic_4.15.0-43.46_amd64.deb
--rw-r--r-- 1 bryan bryan   12780 Jan 23 16:56 linux-image-4.15.0-43-generic-dbgsym_4.15.0-43.46_amd64.ddeb
--rw-r--r-- 1 bryan bryan 7960520 Jan 23 16:56 linux-image-4.15.0-43-lowlatency_4.15.0-43.46_amd64.deb
--rw-r--r-- 1 bryan bryan   12788 Jan 23 16:56 linux-image-4.15.0-43-lowlatency-dbgsym_4.15.0-43.46_amd64.ddeb
-drwxrwxr-x 5 bryan bryan    4096 Jan 23 16:56 linux-signed-4.15.0
--rw-r--r-- 1 bryan bryan    1775 Dec  7 07:48 linux-signed_4.15.0-43.46.dsc
--rw-r--r-- 1 bryan bryan   16056 Dec  7 07:48 linux-signed_4.15.0-43.46.tar.xz
+total 26140
+-rw-r--r-- 1 bryan bryan 8867260 May 19 18:59 kernel-signed-image-5.4.0-31-generic-di_5.4.0-31.35_amd64.udeb
+-rw-r--r-- 1 bryan bryan 8881024 May 19 18:59 linux-image-5.4.0-31-generic_5.4.0-31.35_amd64.deb
+-rw-r--r-- 1 bryan bryan   14776 May 19 18:59 linux-image-5.4.0-31-generic-dbgsym_5.4.0-31.35_amd64.ddeb
+-rw-r--r-- 1 bryan bryan 8953716 May 19 18:59 linux-image-5.4.0-31-lowlatency_5.4.0-31.35_amd64.deb
+-rw-r--r-- 1 bryan bryan   14784 May 19 18:59 linux-image-5.4.0-31-lowlatency-dbgsym_5.4.0-31.35_amd64.ddeb
+drwxrwxr-x 5 bryan bryan    4096 May 19 18:58 linux-signed-5.4.0
+-rw-r--r-- 1 bryan bryan    2179 May  8 10:58 linux-signed_5.4.0-31.35.dsc
+-rw-r--r-- 1 bryan bryan   18284 May  8 10:58 linux-signed_5.4.0-31.35.tar.xz
 ```
 
 The *.deb* files contain the compiled kernel, which you should now include in your repos. You do not need to install it for the rest of the assignment to work, and to keep your VM system working more consistently I would not recommend installing it. 
@@ -255,12 +255,8 @@ Here is an example of a correctly structured repository:
 ........hello.c
 ........Makefile
 ....hello.ko
-....linux-cloud-tools-3.13.0-xxx.deb
-....linux-headers-3.13.0-xxx.deb
-....linux-headers-3.13.0-xxx.deb
-....linux-image-3.13.0-xxx.deb
-....linux-image-extra-3.13.0-xxx.deb
-....linux-tools-3.13.0-44-xxx.deb
+....linux-image-5.4.0-31-generic_5.4.0-31.35_amd64.deb
+....linux-image-5.4.0-31-lowlatency_5.4.0-31.35_amd64.deb
 ....numpagefaults.ko
 ```
 
