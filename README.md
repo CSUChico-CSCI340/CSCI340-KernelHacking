@@ -231,6 +231,7 @@ pgfault 2301445
 9. The only function you really need to get the pagefault stat is all_vm_events, which populates an array of longs with various statistical information[10]. You just need to invoke the function, then index to the correct array element in the result; in our case, PGFAULT is the index we need. Examples of all_vm_events usage are available in the Linux kernel source[11].
 You’ll need to *#include \<linux/mm.h\>* in your kernel module to access the all_vm_events function.
 10. seq_printf uses the same format specifiers as printf. The format specifier for an unsigned long is just a Google search away.
+11. Great tutorial on proc files and seq_printf: [https://www.linux.com/learn/kernel-newbie-corner-kernel-debugging-using-proc-sequence-files-part-1](https://www.linux.com/learn/kernel-newbie-corner-kernel-debugging-using-proc-sequence-files-part-1)
 
 ## Evaluation
 You will be graded based on your success in completing various steps of this assignment. The scoring for this assignment is as follows:
