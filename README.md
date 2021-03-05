@@ -212,7 +212,7 @@ Good luck!
 ## Hints
 There are quite a few hints for this assignment:
 
-1. When compiling the Linux kernel, make sure the virtual disk for the VM has plenty of space. The default disk size of 20 GB is probably sufficient.
+1. When compiling the Linux kernel, make sure the virtual disk for the VM has plenty of space. The default disk size of 20 GB is probably sufficient. If you are using Ubuntu Desktop you might want to go with 60GB to be safe. 
 2. Take a snapshot of the VM once the base system is installed and configured. This snapshot will be quite handy if something gets fouled up during the process of building the kernel.
 3. Take a snapshot of the VM before installing the new kernel. This snapshot will be quite handy if something gets fouled up during the process of installing the kernel.
 4. Be sure to successfully complete the kernel compilation portion of the assignment before attempting to compile the Hello World kernel module. In particular, the header files for the Linux kernel must be installed for kernel modules to build correctly.
