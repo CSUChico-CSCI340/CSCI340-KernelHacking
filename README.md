@@ -11,7 +11,7 @@ Logistics
 The only “hand-in” will be electronic. Any clarifications and revisions to the assignment will be modified here and announced to the class via Piazza.
 
 ## Hand Out Instructions
-For this assignment you will want to use a virtual machine (VM); however, if you are running a native install of 64bit Ubuntu 20.04 LTS you should be able to do this without using a VM. I would recommend using a VM as we are going to be modifying privileged code and you could potentially corrupt your native system if you aren’t using a VM.
+For this assignment you will want to use a virtual machine (VM); however, if you are running a native install of 64bit Ubuntu 22.04 LTS you should be able to do this without using a VM. I would recommend using a VM as we are going to be modifying privileged code and you could potentially corrupt your native system if you aren’t using a VM.
 There are no handout files for this assignment; however, on my webpage for this assignment there is a provided set of files for the hello world kernel module that you should build first to familiarize yourself with the basics of compiling & installing a compiled kernel module.
 
 ## Kernel Modules
@@ -53,7 +53,7 @@ The sudo in the previous commands indicate we are invoking the given commands as
 
 Once the build environment is set up, you will need to download the source code for the Linux kernel you are currently running (we aren’t trying to compile and install a newer kernel, just re-compile the current kernel). Downloading the source code for the Linux kernel is a simple process, and very common for people who are running user-built (instead of package-maintained) Linux distros. Gentoo Linux is an example of such a distro if you are interested [3].
 
-To get the source code for the currently running Linux kernel on Ubuntu 20.04, we will use apt-get, which will obtain the source for a specific binary package it provides:
+To get the source code for the currently running Linux kernel on Ubuntu 22.04, we will use apt-get, which will obtain the source for a specific binary package it provides:
 
 ```bash
 ~$ mkdir kernel-assignment
