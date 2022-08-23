@@ -23,8 +23,8 @@ For more information on Linux kernel modules, I highly recommend reading this ex
 ## Your Task
 For this assignment you will be doing the following:
 
-1. Get the latest Linux kernel source for Ubuntu 20.04
-2. Compile the latest Linux kernel source for Ubuntu 20.04
+1. Get the latest Linux kernel source for Ubuntu 22.04
+2. Compile the latest Linux kernel source for Ubuntu 22.04
 3. Compile a Hello World kernel module
 4. Write a kernel module to create and modify a /proc file
 
@@ -33,9 +33,9 @@ In this document we will walk through the steps to do items 1-3 above. The code 
 
 ## Compile the Linux kernel from source
 
-Your first step will be to download and install Ubuntu 20.04 64bit [6] onto your computer or VM (the Desktop and Server variants of Ubuntu will both work, but the Server variant is recommended because it requires less disk space). If you need help with this step please ask me to show you in lab or come to my office hours. 
+Your first step will be to download and install Ubuntu 22.04 64bit [6] onto your computer or VM (the Desktop and Server variants of Ubuntu will both work, but the Server variant is recommended because it requires less disk space). If you need help with this step please ask me to show you in lab or come to my office hours. 
 
-Once Ubuntu is installed, its possible you may need to correct your apt sources list (*/etc/apt/sources.list*) if you are using the server version of Ubuntu 20.04 as it might have the cdrom sources still enabled. It's also possible that the sources list does not include the source code options, so you'll likely need to uncomment the *deb-src* links in the sources file. If your *sources.list* file only has a few lines you might need a more complete sources.list file like the one [here](https://gist.github.com/javawolfpack/9af9520c8e09930315a5dd45088547d4). In this way, we insure all the necessary tools to download, build, and install the new Linux kernel are available on the system. 
+Once Ubuntu is installed, its possible you may need to correct your apt sources list (*/etc/apt/sources.list*) if you are using the server version of Ubuntu 22.04 as it might have the cdrom sources still enabled. It's also possible that the sources list does not include the source code options, so you'll likely need to uncomment the *deb-src* links in the sources file. If your *sources.list* file only has a few lines you might need a more complete sources.list file like the one [here](https://gist.github.com/javawolfpack/9af9520c8e09930315a5dd45088547d4). In this way, we insure all the necessary tools to download, build, and install the new Linux kernel are available on the system. 
 
 Next, You will need to set up the installation’s build environment by running the following commands in a terminal window (make sure your *sources.list* is updated before doing these steps):
 
