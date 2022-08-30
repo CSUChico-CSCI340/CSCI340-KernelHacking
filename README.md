@@ -149,7 +149,7 @@ The only generated file that we care about is the hello.ko file, which is a kern
 ```bash
 ~/helloworld$ sudo insmod hello.ko
 ~/helloworld$ sudo rmmod hello
-~/helloworld$ dmesg | tail
+~/helloworld$ sudo dmesg | tail
 ...
 [ 6814.354580] Hello world!
 [ 6819.571911] Cleaning up module.
@@ -159,7 +159,7 @@ In the above example, I inserted the Hello World kernel module with the insmod c
 You may see a warning in the dmesg output:
 
 ```bash
-~$ dmesg | tail
+~$ sudo dmesg | tail
 ...
 [  258.556284] hello: module verification failed: signature and/or
 required key missing - tainting kernel
