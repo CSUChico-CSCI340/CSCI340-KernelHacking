@@ -23,8 +23,8 @@ For more information on Linux kernel modules, I highly recommend reading this ex
 ## Your Task
 For this assignment you will be doing the following:
 
-<strike>1. Get the latest Linux kernel source for Ubuntu 22.04
-2. Compile the latest Linux kernel source for Ubuntu 22.04</strike>
+1. <strike>Get the latest Linux kernel source for Ubuntu 22.04</strike>
+2. <strike>Compile the latest Linux kernel source for Ubuntu 22.04</strike>
 3. Compile a Hello World kernel module
 4. Write a kernel module to create and modify a /proc file
 
@@ -52,7 +52,7 @@ These commands update the package list to make sure we have the most up-to-date 
 The sudo in the previous commands indicate we are invoking the given commands as the root user. sudo only works if your user account has sudoer privileges; if not, you will receive a message indicating the user is not in the sudoers file. This is usually not an issue in standard installation, but if you encounter this message, it is simple to give the current user permission to run commands with sudo [2].
 
 Once the build environment is set up, you will need to download the source code for the Linux kernel you are currently running (we aren’t trying to compile and install a newer kernel, just re-compile the current kernel). Downloading the source code for the Linux kernel is a simple process, and very common for people who are running user-built (instead of package-maintained) Linux distros. Gentoo Linux is an example of such a distro if you are interested [3].
-<strike>
+
 To get the source code for the currently running Linux kernel on Ubuntu 22.04, we will use apt-get, which will obtain the source for a specific binary package it provides:
 
 ```bash
@@ -70,6 +70,7 @@ dpkg-source: info: unpacking linux-signed_5.4.0-31.35.tar.xz
 ~/kernel-assignment$ 
 ```
 
+<strike>
 It is also common practice to obtain the Linux kernel source by checking out the current kernel source from the source tree on the official Linux git repository, but this assignment was tested with the apt-get approach so that’s what I’m giving for the instructions. It is also likely you'll get the linux-signed vs generic source, which is fine. The references contain a link to an Ubuntu wiki article about building your own kernel that has the git commands if you want to know what they are [5].
 
 The apt-get command will take a few minutes to download the Linux source code. When the download process finishes, you should have some additional files and a source code folder in the current working directory:
@@ -257,8 +258,6 @@ Here is an example of a correctly structured repository:
 ........hello.c
 ........Makefile
 ....hello.ko
-....linux-image-5.4.0-31-generic_5.4.0-31.35_amd64.deb
-....linux-image-5.4.0-31-lowlatency_5.4.0-31.35_amd64.deb
 ....numpagefaults.ko
 ```
 
