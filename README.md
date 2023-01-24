@@ -23,7 +23,7 @@ For more information on Linux kernel modules, I highly recommend reading this ex
 ## Your Task
 For this assignment you will be doing the following:
 
-1. <strike>Get the latest Linux kernel source for Ubuntu 22.04</strike>
+1. Get the latest Linux kernel source for Ubuntu 22.04
 2. <strike>Compile the latest Linux kernel source for Ubuntu 22.04</strike>
 3. Compile a Hello World kernel module
 4. Write a kernel module to create and modify a /proc file
