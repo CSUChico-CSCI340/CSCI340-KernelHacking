@@ -24,9 +24,8 @@ For more information on Linux kernel modules, I highly recommend reading this ex
 For this assignment you will be doing the following:
 
 1. Get the latest Linux kernel source for Ubuntu 22.04
-2. <strike>Compile the latest Linux kernel source for Ubuntu 22.04</strike>
-3. Compile a Hello World kernel module
-4. Write a kernel module to create and modify a /proc file
+2. Compile a Hello World kernel module
+3. Write a kernel module to create and modify a /proc file
 
 In this document we will walk through the steps to do items 1-3 above. The code for the Hello World kernel module can be found on my website along with this writeup. Details on item 4 are found later in this document.
 
@@ -44,10 +43,9 @@ $ sudo apt-get update
 $ sudo apt-get upgrade 
 $ sudo apt-get dist-upgrade
 $ sudo apt-get install build-essential debhelper
-$ sudo apt-get build-dep linux-image-$(uname -r)
 ```
 
-These commands update the package list to make sure we have the most up-to-date list of packages, install the latest versions of all installed software, install some general-purpose build tools, and finally install the build dependencies for the Linux kernel itself. It is likely the build-dep will install the *linux-signed* instead of generic build dependencies; however, that is fine. 
+These commands update the package list to make sure we have the most up-to-date list of packages, install the latest versions of all installed software, install some general-purpose build tools, and finally install the build dependencies for the Linux kernel itself.  
 
 The sudo in the previous commands indicate we are invoking the given commands as the root user. sudo only works if your user account has sudoer privileges; if not, you will receive a message indicating the user is not in the sudoers file. This is usually not an issue in standard installation, but if you encounter this message, it is simple to give the current user permission to run commands with sudo [2].
 
@@ -70,49 +68,6 @@ dpkg-source: info: unpacking linux-signed_5.4.0-31.35.tar.xz
 ~/kernel-assignment$ 
 ```
 
-<strike>
-It is also common practice to obtain the Linux kernel source by checking out the current kernel source from the source tree on the official Linux git repository, but this assignment was tested with the apt-get approach so that’s what I’m giving for the instructions. It is also likely you'll get the linux-signed vs generic source, which is fine. The references contain a link to an Ubuntu wiki article about building your own kernel that has the git commands if you want to know what they are [5].
-
-The apt-get command will take a few minutes to download the Linux source code. When the download process finishes, you should have some additional files and a source code folder in the current working directory:
-
-```bash
-~/kernel-assignment$ ls -l
-total 28
-drwxrwxr-x 3 bryan bryan  4096 May  7 08:59 linux-signed-5.4.0
--rw-r--r-- 1 bryan bryan  2179 May  8 10:58 linux-signed_5.4.0-31.35.dsc
--rw-r--r-- 1 bryan bryan 18284 May  8 10:58 linux-signed_5.4.0-31.35.tar.xz
-```
-
-If your version number varies this is likely due a newer kernel releasing since this readme was written, this is fine. We are not going to modify the kernel’s configuration, so we can now move to building the new kernel. Ubuntu does this a bit differently than other kernels I’ve built, which usually have a make directive to make the configuration, which can be the default or modified by you, and a second make directive to build the kernel. In this case, we will build the kernel using the following commands:
-
-```bash
-~/kernel-assignment/$ cd linux-signed-5.4.0/
-~/kernel-assignment/linux-signed-5.4.0$ fakeroot debian/rules clean
-~/kernel-assignment/linux-signed-5.4.0$ fakeroot debian/rules binary
-```
-
-The first step above changes the working directory to be the root of the kernel source tree, which is the *linux-5.4.0* folder in this case. The build commands will take quite a while to run; on my fastest computer, it took an hour and half to build the .deb files. If you get errors during the compilation, please post about them in the class discussion board and see me in office hours or during lab so we can track down and fix the issue.
-When the build process is complete (hopefully without any errors), there will be numerous .deb files in the parent directory of the kernel source tree (this parent directory will be the kernel-assignement directory we created when downloading the kernel source code):
-
-```bash
-~/kernel-assignment/linux-signed-5.4.0$ cd ..
-~/kernel-assignment$ ls -l
-total 26140
--rw-r--r-- 1 bryan bryan 8867260 May 19 18:59 kernel-signed-image-5.4.0-31-generic-di_5.4.0-31.35_amd64.udeb
--rw-r--r-- 1 bryan bryan 8881024 May 19 18:59 linux-image-5.4.0-31-generic_5.4.0-31.35_amd64.deb
--rw-r--r-- 1 bryan bryan   14776 May 19 18:59 linux-image-5.4.0-31-generic-dbgsym_5.4.0-31.35_amd64.ddeb
--rw-r--r-- 1 bryan bryan 8953716 May 19 18:59 linux-image-5.4.0-31-lowlatency_5.4.0-31.35_amd64.deb
--rw-r--r-- 1 bryan bryan   14784 May 19 18:59 linux-image-5.4.0-31-lowlatency-dbgsym_5.4.0-31.35_amd64.ddeb
-drwxrwxr-x 5 bryan bryan    4096 May 19 18:58 linux-signed-5.4.0
--rw-r--r-- 1 bryan bryan    2179 May  8 10:58 linux-signed_5.4.0-31.35.dsc
--rw-r--r-- 1 bryan bryan   18284 May  8 10:58 linux-signed_5.4.0-31.35.tar.xz
-```
-
-The *.deb* files contain the compiled kernel, which you should now include in your repos. You do not need to install it for the rest of the assignment to work, and to keep your VM system working more consistently I would not recommend installing it. 
-
-You can now brag about your 1337 or leet status as a CS major and the fact you have compiled the Linux kernel from source.
-
-</strike>
 ## Compile Hello World kernel module
 Now let’s get the Hello World kernel module source and Makefile files from my web server and work on compiling a Linux kernel module. You will need to download the helloworld.tar file from my website:
 
