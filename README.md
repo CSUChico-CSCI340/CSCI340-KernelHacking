@@ -42,8 +42,7 @@ Next, You will need to set up the installation’s build environment by running 
 $ sudo apt-get update
 $ sudo apt-get upgrade 
 $ sudo apt-get dist-upgrade
-$ sudo apt-get install build-essential debhelper
-$ sudo apt-get install gcc-12
+$ sudo apt-get install build-essential debhelper gcc-12
 ```
 
 These commands update the package list to make sure we have the most up-to-date list of packages, install the latest versions of all installed software, install some general-purpose build tools, and finally install the build dependencies for the Linux kernel itself.  
