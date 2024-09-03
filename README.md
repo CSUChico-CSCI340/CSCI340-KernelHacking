@@ -163,7 +163,7 @@ It’s worth thinking of this problem in a few steps:
 3. Write a kernel module that successfully prints a fixed string when one cat’s the /proc/numpagefaults file.
 4. Locate the kernel code that generates page faults statistics
 5. Write a kernel module that prints that statistic every time someone cat’s the /proc/numpagefaults file.
-6. [Submit](##-Hand-In-Instructions)
+6. [Submit](#-Evaluation)
 
 Good luck!
 
@@ -191,7 +191,7 @@ You’ll need to *#include \<linux/mm.h\>* in your kernel module to access the a
 10. seq_printf uses the same format specifiers as printf. The format specifier for an unsigned long is just a Google search away.
 11. Great tutorial on proc files and seq_printf: [https://www.linux.com/learn/kernel-newbie-corner-kernel-debugging-using-proc-sequence-files-part-1](https://www.linux.com/learn/kernel-newbie-corner-kernel-debugging-using-proc-sequence-files-part-1)
 
-## Evaluation
+# Evaluation
 You will be graded based on your success in completing various steps of this assignment. The scoring for this assignment is as follows:
 
 * 20% If you successfully compile a new kernel from source
