@@ -200,9 +200,9 @@ You will be graded based on your success in completing various steps of this ass
 * 100% You successfully get everything else working and your kernel module correctly writes the number of page faults to the /proc file requested.
 
 ## Hand In Instructions
-You will need to submit your assignment by committing your code, and compiled .deb and .ko files to the GitHub private repo you were invited to. Your repo must be part of the CSUChico-CSCI340 organization on GitHub; if this is not the case, you have put your files in the wrong repository. If you do not have a repository in this organization, make sure you filled out the GitHub request on my website for this semester.
+You will need to submit your assignment by committing your code, and .ko files to the GitHub private repo you were invited to. Your repo must be part of the CSUChico-CSCI340 organization on GitHub; if this is not the case, you have put your files in the wrong repository. If you do not have a repository in this organization, make sure you filled out the GitHub request on my website for this semester.
 
-The files should be organized with the source files for your kernel module in a src/ folder in your repo, and the compiled dpkg (.deb) files and kernel object (.ko) files in the root directory.
+The files should be organized with the source files for your kernel module in a src/ folder in your repo, and the compiled kernel object (.ko) files in the root directory.
 Here is an example of a correctly structured repository:
 
 ```bash
