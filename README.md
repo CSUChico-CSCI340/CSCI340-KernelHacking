@@ -85,12 +85,15 @@ Now let’s get the Hello World kernel module source and Makefile files and work
 
 Or, you can choose the Download ZIP option and download these files from this CSCI440-KernelHacking repo. For more detailed instructions for completing this option, look in the [CSCI440-Course-Materials/Assignments.md](https://github.com/shelleywong/CSCI440-Course-Materials/blob/main/Assignments.md).
 
-You could download the file from the link above to your local computer, but I would recommend downloading it directly to your Ubuntu VM so you can make use of it with having to worry about copying the files onto the VM. To do this you can use the wget command with that URL as the argument to the command and it’ll download the helloworld.tar file to your current working directory. (If you do download the files locally, you can use secure copy protocol (the Linux `scp` command) or another option that supports Secure File Transfer Protocol (SFTP) to get the files to your Ubuntu VM).
+You could download the file from the link above to your local computer, but I would recommend downloading it directly to your Ubuntu VM so you can make use of it with having to worry about copying the files onto the VM. To do this you can use the `wget` command with that URL as the argument to the command and it’ll download the helloworld.tar file to your current working directory. (If you do download the files locally, you can use secure copy protocol (the Linux `scp` command) or another option that supports Secure File Transfer Protocol (SFTP) to get the files to your Ubuntu VM).
+
+```bash
+~$ wget https://www.bryancdixon.com/static/helloworld.tar
+```
 
 Once you have the tar file you will want to extract it:
 
 ```bash
-~$ wget https://www.bryancdixon.com/static/helloworld.tar
 ~$ tar xvf helloworld.tar
 x helloworld/
 x helloworld/hello.c
