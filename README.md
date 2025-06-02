@@ -1,4 +1,4 @@
-# Writing a Kernel Module
+# Assignment 1: Writing a Kernel Module
 California State University - Chico
 
 By Bryan Dixon
@@ -7,34 +7,42 @@ By Bryan Dixon
 ## Introduction
 
 The purpose of this assignment is for you to become more familiar with how kernel modules are written and aspects of the Linux operating system using these modules.
-Logistics
-The only “hand-in” will be electronic. Any clarifications and revisions to the assignment will be modified here and announced to the class via Piazza.
+
+Logistics: The only “hand-in” will be electronic. Any clarifications and revisions to the assignment will be modified here and announced to the class during class or via Canvas.
 
 ## Hand Out Instructions
-For this assignment you will want to use a virtual machine (VM); however, if you are running a native install of 64bit Ubuntu 22.04 LTS you should be able to do this without using a VM. I would recommend using a VM as we are going to be modifying privileged code and you could potentially corrupt your native system if you aren’t using a VM.
-There are no handout files for this assignment; however, on my webpage for this assignment there is a provided set of files for the hello world kernel module that you should build first to familiarize yourself with the basics of compiling & installing a compiled kernel module.
+For this assignment you will want to use a virtual machine (VM). If you are running a native install of 64bit Ubuntu 22.04 LTS, you should be able to do this without using a VM; however, I would recommend using a VM as we are going to be modifying privileged code and you could potentially corrupt your native system if you are not using a VM.
+
+To complete this assignment, one of the steps is to **Compile Hello World kernel module** -- there is a provided set of files for the hello world kernel module that you should build first to familiarize yourself with the basics of compiling & installing a compiled kernel module. When you get to this step, you can access these files with either of the following options (see the [Compile Hello World kernel module](#compile-hello-world-kernel-module) step for more details):
+- Download [https://www.bryancdixon.com/static/helloworld.tar](https://www.bryancdixon.com/static/helloworld.tar) -- download the provided tar file
+- Download ZIP -- download a ZIP file of this CSCI440-KernelHacking repository
 
 ## Kernel Modules
 There are two main ways to add code to the Linux kernel. One way is to choose or add code to compile into the kernel during the compilation process. The other method is to add the code to the Linux kernel while it is running, which is what a loadable kernel module is [8].
 
-For more information on Linux kernel modules, I highly recommend reading this extremely good introduc- tion to Linux Loadable Kernel Modules and how they are commonly used:
+For more information on Linux kernel modules, I highly recommend reading this extremely good introduction to Linux Loadable Kernel Modules and how they are commonly used:
 [http://www.tldp.org/HOWTO/Module-HOWTO/x73.html](http://www.tldp.org/HOWTO/Module-HOWTO/x73.html)
 
 ## Your Task
-For this assignment you will be doing the following:
+This is a general overview of what you will be doing for this assignment:
 
 1. Get the latest Linux kernel source for Ubuntu 22.04
 2. Compile a Hello World kernel module
-3. Write a kernel module to create and modify a /proc file
+3. Write a kernel module to create and modify a /proc file and print a fixed string
+4. Locate the kernel code that generates page fault statistics and print that stat
 
-In this document we will walk through the steps to do items 1-3 above. The code for the Hello World kernel module can be found on my website along with this writeup. Details on item 4 are found later in this document.
+In this document we will walk through the steps to do items 1-3 above. Details and hints on item 4 are found later in this document.
 
 
 ## Compile the Linux kernel from source
 
-Your first step will be to download and install Ubuntu 22.04 64bit [6] onto your computer or VM (the Desktop and Server variants of Ubuntu will both work, but the Server variant is recommended because it requires less disk space). If you need help with this step please ask me to show you in lab or come to my office hours. 
+Your first step will be to download and install Ubuntu 22.04 64bit [6] onto your Linux VM
+- If you are using a VM on your local machine (e.g. VMWare, VirtualBox), the Desktop and Server variants of Ubuntu will both work, but the [Server](https://ubuntu.com/download/server) variant is recommended because it requires less disk space).
+- If you are using a [Compute Engine VM instance](https://console.cloud.google.com/compute) through Google Cloud Console, you should be able to create an instance with an Ubuntu 22.04 LTS x86/64 image (no need to download separately).
 
-Once Ubuntu is installed, its possible you may need to correct your apt sources list (*/etc/apt/sources.list*) if you are using the server version of Ubuntu 22.04 as it might have the cdrom sources still enabled. It's also possible that the sources list does not include the source code options, so you'll likely need to uncomment the *deb-src* links in the sources file. If your *sources.list* file only has a few lines you might need a more complete sources.list file like the one [here](https://gist.github.com/javawolfpack/9af9520c8e09930315a5dd45088547d4). In this way, we insure all the necessary tools to download, build, and install the new Linux kernel are available on the system. 
+Some instructions for setting up a Google Cloud Compute Engine VM instance will be provided during lab. If you need additional assistance with this step, please ask me to show you in lab or come to my office hours. 
+
+Once Ubuntu is installed, its possible you may need to correct your apt sources list (*/etc/apt/sources.list*) if you are using the server version of Ubuntu 22.04 as it might have the cdrom sources still enabled. It's also possible that the sources list does not include the source code options, so you'll likely need to uncomment the *deb-src* links in the sources file. If your *sources.list* file only has a few lines you might need a more complete sources.list file like the one [here](https://gist.github.com/javawolfpack/9af9520c8e09930315a5dd45088547d4). In this way, we ensure all the necessary tools to download, build, and install the new Linux kernel are available on the system. 
 
 Next, You will need to set up the installation’s build environment by running the following commands in a terminal window (make sure your *sources.list* is updated before doing these steps):
 
@@ -49,9 +57,11 @@ These commands update the package list to make sure we have the most up-to-date 
 
 The sudo in the previous commands indicate we are invoking the given commands as the root user. sudo only works if your user account has sudoer privileges; if not, you will receive a message indicating the user is not in the sudoers file. This is usually not an issue in standard installation, but if you encounter this message, it is simple to give the current user permission to run commands with sudo [2].
 
-Once the build environment is set up, you will need to download the source code for the Linux kernel you are currently running (we aren’t trying to compile and install a newer kernel, just re-compile the current kernel). Downloading the source code for the Linux kernel is a simple process, and very common for people who are running user-built (instead of package-maintained) Linux distros. Gentoo Linux is an example of such a distro if you are interested [3].
+Once the build environment is set up, you will want access to the source code for the Linux kernel you are currently running (we aren’t trying to compile and install a newer kernel, just re-compile the current kernel). Downloading the source code for the Linux kernel is a simple process, and very common for people who are running user-built (instead of package-maintained) Linux distros. Gentoo Linux is an example of such a distro if you are interested [3].
 
-To get the source code for the currently running Linux kernel on Ubuntu 22.04, we will use apt-get, which will obtain the source for a specific binary package it provides:
+If you are using a newer version of Ubuntu (24.04 or later), the `apt-get source linux-image-$(uname -r)` command will not work, but you can still access the Linux source code (look for Hints 8 and 9 in this document).
+
+If you would like to get the source code for the currently running Linux kernel on Ubuntu 22.04, you can use apt-get, which will obtain the source for a specific binary package it provides:
 
 ```bash
 ~$ mkdir kernel-assignment
@@ -69,11 +79,14 @@ dpkg-source: info: unpacking linux-signed_5.4.0-31.35.tar.xz
 ```
 
 ## Compile Hello World kernel module
-Now let’s get the Hello World kernel module source and Makefile files from my web server and work on compiling a Linux kernel module. You will need to download the helloworld.tar file from my website:
+Now let’s get the Hello World kernel module source and Makefile files and work on compiling a Linux kernel module. You will need to download the helloworld.tar file from my website:
 
 [https://www.bryancdixon.com/static/helloworld.tar](https://www.bryancdixon.com/static/helloworld.tar)
 
-You could download the file from the link above to your local computer, but I would recommend downloading it directly to your Ubuntu VM so you can make use of it with having to worry about copying the files onto the VM. To do this you can use the wget command with that URL as the argument to the command and it’ll download the helloworld.tar file to your current working directory.
+Or, you can choose the Download ZIP option and download these files from this CSCI440-KernelHacking repo. For more detailed instructions for completing this option, look in the [CSCI440-Course-Materials/Assignments.md](https://github.com/shelleywong/CSCI440-Course-Materials/blob/main/Assignments.md).
+
+You could download the file from the link above to your local computer, but I would recommend downloading it directly to your Ubuntu VM so you can make use of it with having to worry about copying the files onto the VM. To do this you can use the wget command with that URL as the argument to the command and it’ll download the helloworld.tar file to your current working directory. (If you do download the files locally, you can use secure copy protocol (the Linux `scp` command) or another option that supports Secure File Transfer Protocol (SFTP) to get the files to your Ubuntu VM).
+
 Once you have the tar file you will want to extract it:
 
 ```bash
@@ -128,7 +141,7 @@ This warning can be safely ignored.
 
 ## Write your own kernel module
 
-Now for the hard part: using the skills you’ve gained in this assignment so far, resources provided later in the hints section, and some details from lab you’ll now need to write your own Linux kernel module to provide us a system statistic in a /proc system file [1].
+Now for the hard part: using the skills you’ve gained in this assignment so far, resources provided later in the hints section, and some details from lab, you’ll now need to write your own Linux kernel module to provide us a system statistic in a /proc system file [1].
 
 When we insert your module for grading it should create a new entry in the /proc filesystem called:
 
@@ -171,7 +184,7 @@ Good luck!
 There are quite a few hints for this assignment:
 
 1. When compiling the Linux kernel, make sure the virtual disk for the VM has plenty of space. The default disk size of 20 GB is probably sufficient. If you are using Ubuntu Desktop you might want to go with 60GB to be safe. 
-2. Take a snapshot of the VM once the base system is installed and configured. This snapshot will be quite handy if something gets fouled up during the process of building the kernel.
+2. Take a snapshot of the VM once the base system is installed and configured. This snapshot will be quite handy if something gets fouled up during the process of building the kernel. On Google Cloud, go to Compute Engine, look in the Storage section for Snapshots, and Create Snapshot.
 3. Take a snapshot of the VM before installing the new kernel. This snapshot will be quite handy if something gets fouled up during the process of installing the kernel.
 4. Be sure to successfully complete the kernel compilation portion of the assignment before attempting to compile the Hello World kernel module. In particular, the header files for the Linux kernel must be installed for kernel modules to build correctly.
 5. You will need to find the symbol that has been explicitly exported by the kernel to be accessible to kernel modules; not all functions and variables in the kernel code are accessible to kernel modules. The kernel uses the EXPORT SYMBOL macro to export a particular symbol, so you need to find the specific symbol that’s been exported as such that provides the page fault statistic we want.
