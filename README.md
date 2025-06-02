@@ -237,7 +237,7 @@ For ease of grading, you should name your .ko files as shown. All of the source 
 
 
 ## References
-1. Steve Gribble CSE551 Spring 2007 - Programming Assignment #2 https://courses.cs. washington.edu/courses/cse551/07sp/programming/a2.html. Online; accessed 22- August-2014
+1. Steve Gribble CSE551 Spring 2007 - Programming Assignment #2 [https://courses.cs.washington.edu/courses/cse551/07sp/programming/a2.html](https://courses.cs.washington.edu/courses/cse551/07sp/programming/a2.html). Online; accessed 22- August-2014
 2. Allowing other users to run sudo https://help.ubuntu.com/community/RootSudo# Allowing_other_users_to_run_sudo. Online; accessed 19-January-2015.
 3. Gentoo Linux https://www.gentoo.org/. Online; accessed 21-August-2014.
 4. The GNU General Public License http://www.gnu.org/copyleft/gpl.html Online; ac-
