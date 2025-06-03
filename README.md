@@ -237,17 +237,14 @@ For ease of grading, you should name your .ko files as shown. All of the source 
 
 
 ## References
-1. Steve Gribble CSE551 Spring 2007 - Programming Assignment #2 [https://courses.cs.washington.edu/courses/cse551/07sp/programming/a2.html](https://courses.cs.washington.edu/courses/cse551/07sp/programming/a2.html). Online; accessed 22- August-2014
-2. Allowing other users to run sudo https://help.ubuntu.com/community/RootSudo# Allowing_other_users_to_run_sudo. Online; accessed 19-January-2015.
-3. Gentoo Linux https://www.gentoo.org/. Online; accessed 21-August-2014.
-4. The GNU General Public License http://www.gnu.org/copyleft/gpl.html Online; ac-
-cessed 23-August-2014
-5. Ubuntu Wiki “Build Your Own Kernel”. https://wiki.ubuntu.com/Kernel/
-BuildYourOwnKernel. Online; accessed 21-August-2014.
-6. Ubuntu “Download Ubuntu Server 14.04.1 LTS”. http://www.ubuntu.com/download/
-server. Online; accessed 21-August-2014.
-7. Linux Filesystem Hierarchy ”Chapter 1: Linux Filesystem Hierarchy - 1.14. /proc http://www. tldp.org/LDP/Linux-Filesystem-Hierarchy/html/proc.html Online; accessed 20- January-2015.
-8. Linux Loadable Kernel Module HOWTO “Introduction to Linux Loadable Kernel Modules”. http: //www.tldp.org/HOWTO/Module-HOWTO/x73.html. Online; accessed 21-August-2014.
-9. “Manage /proc file with seq file”. http://www.tldp.org/LDP/lkmpg/2.6/html/x861.html. Online; accessed 29-January-2015.
-10. https://github.com/torvalds/linux/blob/master/mm/vmstat.c. Online; accessed 7-February-2016.
-11. https://github.com/torvalds/linux/blob/master/arch/s390/appldata/appldata_mem.c. Online; accessed 7-February-2016.
+1. Steve Gribble CSE551 Spring 2007 - Programming Assignment #2 [https://courses.cs.washington.edu/courses/cse551/07sp/programming/a2.html](https://courses.cs.washington.edu/courses/cse551/07sp/programming/a2.html). Online; accessed 22-August-2014
+2. Allowing other users to run sudo [https://help.ubuntu.com/community/RootSudo#Allowing_other_users_to_run_sudo](https://help.ubuntu.com/community/RootSudo#Allowing_other_users_to_run_sudo). Online; accessed 19-January-2015.
+3. Gentoo Linux [https://www.gentoo.org/](https://www.gentoo.org/). Online; accessed 21-August-2014.
+4. The GNU General Public License [http://www.gnu.org/copyleft/gpl.html](http://www.gnu.org/copyleft/gpl.html) Online; accessed 23-August-2014
+5. Ubuntu Wiki “Build Your Own Kernel”. [https://wiki.ubuntu.com/Kernel/BuildYourOwnKernel](https://wiki.ubuntu.com/Kernel/BuildYourOwnKernel). Online; accessed 21-August-2014.
+6. Ubuntu “Download Ubuntu Server 14.04.1 LTS”. [http://www.ubuntu.com/download/server](http://www.ubuntu.com/download/server). Online; accessed 21-August-2014.
+7. Linux Filesystem Hierarchy ”Chapter 1: Linux Filesystem Hierarchy - 1.14. /proc [http://www.tldp.org/LDP/Linux-Filesystem-Hierarchy/html/proc.html](http://www.tldp.org/LDP/Linux-Filesystem-Hierarchy/html/proc.html) Online; accessed 20- January-2015.
+8. Linux Loadable Kernel Module HOWTO “Introduction to Linux Loadable Kernel Modules”. [http://www.tldp.org/HOWTO/Module-HOWTO/x73.html](http://www.tldp.org/HOWTO/Module-HOWTO/x73.html). Online; accessed 21-August-2014.
+9. “Manage /proc file with seq file”. [http://www.tldp.org/LDP/lkmpg/2.6/html/x861.html](http://www.tldp.org/LDP/lkmpg/2.6/html/x861.html). Online; accessed 29-January-2015.
+10. [https://github.com/torvalds/linux/blob/master/mm/vmstat.c](https://github.com/torvalds/linux/blob/master/mm/vmstat.c). Online; accessed 7-February-2016.
+11. [https://github.com/torvalds/linux/blob/master/arch/s390/appldata/appldata_mem.c](https://github.com/torvalds/linux/blob/master/arch/s390/appldata/appldata_mem.c). Online; accessed 7-February-2016.
